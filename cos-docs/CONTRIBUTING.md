@@ -1,6 +1,6 @@
 # Contributing to cOS
 
-Welcome to cOS! We're building the first conversational operating system for Android, and we'd love your help.
+Welcome to cOS! We're building a unified conversational launcher that reduces phone distraction through natural AI conversation, and we'd love your help.
 
 ## 🚀 Getting Started
 
@@ -19,11 +19,11 @@ Welcome to cOS! We're building the first conversational operating system for And
 ## 🤝 How to Contribute
 
 ### Ways to Help
-- 🐛 **Report Bugs**: File issues for problems you encounter
-- 💡 **Suggest Features**: Propose new conversational skills
-- 🔧 **Submit Code**: Fix bugs or implement features
-- 📚 **Improve Docs**: Help with documentation
-- 🧪 **Test**: Try cOS on different devices
+- 🐛 **Report Bugs**: File issues for conversation understanding problems
+- 💡 **Suggest Features**: Propose new deep Android integrations
+- 🔧 **Submit Code**: Improve AI understanding or Android integration
+- 📚 **Improve Docs**: Help with unified experience documentation
+- 🧪 **Test**: Test the distraction-free experience on different devices
 
 ### Development Process
 1. Create a feature branch (`git checkout -b feature/amazing-skill`)
@@ -32,16 +32,18 @@ Welcome to cOS! We're building the first conversational operating system for And
 4. Submit a pull request
 
 ## 📋 Current Priorities
-- Voice processing integration
-- File management skills
-- System control capabilities
-- Documentation improvements
+- Local AI (Gemma 2B) integration and optimization
+- Deep Android integration capabilities
+- Silent preference learning implementation
+- Built-in tool suite development
+- Unified interface polish
 
 ## 🎯 Areas Looking for Help
-- Android development expertise
-- Voice processing knowledge
-- UI/UX design
-- Documentation writing
-- Testing on various devices
+- AI/ML expertise for local model optimization
+- Deep Android integration and accessibility services
+- Distraction-free UI/UX design
+- Privacy-first architecture
+- Conversation pattern design
+- Testing unified experience on various devices
 
-Thank you for helping build the future of conversational interfaces!
+Thank you for helping build the future of distraction-free, privacy-first conversational computing!

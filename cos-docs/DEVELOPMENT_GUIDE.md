@@ -1,131 +1,140 @@
-# cOS Development Guide - Unified Approach
+# cOS Development Guide - Unified Conversational Experience
 
 ## 🎯 **Project Overview**
 
-You are developing **cOS (Conversational Operating System)** - an adaptive, open-source Android application that transforms smartphones into conversational interfaces with multiple interaction paradigms. Users can choose between Classic (traditional + voice), Widget (contextual), or Hybrid modes.
+You are developing **cOS (Conversational Operating System)** - a unified, open-source Android launcher that transforms smartphones into distraction-free conversational interfaces. cOS eliminates the complexity of multiple modes and provides a single, natural conversation experience powered by local AI.
 
 ## 🏗️ **Architecture Overview**
 
-### **Core Components**
+### **Unified Architecture**
 ```
 cos-core/app/src/main/java/os/conversational/cos/
-├── MainActivity.kt              # Main entry point with mode switching
+├── MainActivity.kt              # Unified launcher entry point
 ├── core/
-│   ├── ConversationEngine.kt   # Unified conversation processor
-│   ├── ContextAnalyzer.kt      # Determines optimal UI response
-│   └── IntentClassifier.kt     # Classifies user intent
+│   ├── ConversationEngine.kt   # Local AI conversation processor
+│   ├── IntelligentActionRouter.kt # Smart action routing
+│   └── SilentLearningEngine.kt # Preference learning
 ├── ui/
-│   ├── adaptive/               # Mode management
-│   ├── classic/                # Traditional UI components
-│   ├── widgets/                # Contextual widget system
+│   ├── unified/                # Single conversation interface
+│   ├── minimal/                # Distraction-free components
 │   └── theme/                  # Material Design 3
-├── skills/                     # Conversational capabilities
+├── integration/                # Deep Android integration
 ├── voice/                      # Voice processing (Vosk + TTS)
-└── chat/                       # Text-based interface
+├── ai/                         # Local AI (Gemma 2B)
+└── tools/                      # Built-in essential tools
 ```
 
 ## 🚀 **Development Priorities**
 
-### **Phase 1: Adaptive Foundation (Current)**
-1. **Core Stability**
+### **Phase 1: Unified Foundation (Current)**
+1. **Core Unified Experience**
    - Fix Vosk voice recognition on physical devices
-   - Implement robust error handling
-   - Create adaptive UI manager
-   - Build mode switching system
+   - Implement robust AI conversation processing
+   - Create single unified interface
+   - Eliminate mode complexity
 
-2. **Multi-Mode Support**
-   - Classic mode with voice overlay
-   - Widget mode with contextual UI
-   - Hybrid mode with smart switching
-   - User preference system
+2. **Local AI Integration**
+   - Gemma 2B for on-device understanding
+   - Natural language intent processing
+   - Silent preference learning
+   - Context-aware responses
 
-3. **Accessibility**
-   - Chat interface for text input
-   - Screen reader support
-   - High contrast themes
-   - Keyboard navigation
+3. **Distraction-Free Design**
+   - Clean chat interface for conversation
+   - Minimal essential shortcuts
+   - Accessibility without complexity
+   - Zero learning curve experience
 
-### **Phase 2: Feature Expansion**
-1. **Enhanced Skills**
-   - System Control (WiFi, Bluetooth, settings)
-   - Contact Management (calls, texts)
-   - Calendar Integration
-   - Calculator with widget view
-   - Weather with contextual display
+### **Phase 2: Deep Integration**
+1. **Intelligent Android Control**
+   - Deep photo/gallery filtering by natural language
+   - Smart messaging routing based on learned preferences
+   - System control through conversation
+   - Content filtering with AI understanding
 
-2. **Widget System**
-   - Calculator widget
-   - Weather widget
-   - File browser widget
-   - Quick actions widget
-   - Music control widget
+2. **Built-in Tool Suite**
+   - PDF viewer integration
+   - Calculator through conversation
+   - Notes and quick capture
+   - File management via natural language
 
-3. **Intelligence**
-   - Context-aware mode switching
-   - Predictive widget surfacing
-   - Learning user preferences
-   - Multi-turn conversations
+3. **Silent Intelligence**
+   - Learn messaging app preferences per contact
+   - Context-aware action suggestions
+   - Cross-conversation memory
+   - Preference adaptation without asking
 
 ### **Phase 3: Polish & Launch**
-1. **User Experience**
-   - Smooth onboarding for all modes
-   - Interactive tutorials
-   - Visual feedback
-   - Customization options
+1. **Optimized Experience**
+   - Distraction-free onboarding
+   - Natural conversation tutorials
+   - Minimal visual feedback
+   - Essential customization only
 
-2. **Performance**
-   - Sub-second response times
-   - Minimal battery impact
-   - Efficient memory usage
-   - Smooth animations
+2. **AI Performance**
+   - Sub-500ms AI response times
+   - Optimized local model performance
+   - Efficient memory usage for 4GB+ devices
+   - Seamless voice/text transitions
 
-3. **Community**
-   - Developer SDK
-   - Skill marketplace
-   - Documentation
-   - Demo videos
+3. **Developer Ecosystem**
+   - Deep integration SDK
+   - Conversation pattern library
+   - Privacy-first documentation
+   - Unified experience demos
 
 ## 💻 **Implementation Guidelines**
 
-### **Adding a New Skill**
+### **Adding a New Deep Integration**
 ```kotlin
-class WeatherSkill : BaseSkill() {
-    override fun processIntent(input: String, context: Context): SkillResponse {
-        return SkillResponse(
-            textResponse = "Currently 72°F and sunny",
-            widgetView = WeatherWidget(temperature = 72, condition = "Sunny"),
-            classicAction = LaunchWeatherApp(),
-            suggestedMode = UIMode.WIDGET
+class WeatherIntegration : DeepIntegration() {
+    override fun handleConversation(input: ConversationInput, context: AIContext): IntelligentResponse {
+        val weatherData = getLocalWeatherData()
+        val preferences = context.getLearnedPreferences()
+        
+        return IntelligentResponse(
+            naturalResponse = "Currently 72°F and sunny in your area",
+            actionTaken = WeatherAction.DISPLAY_CURRENT,
+            builtInDisplay = WeatherDisplay(weatherData),
+            learningData = UserInteractionData(input, preferences)
         )
     }
 }
 ```
 
-### **Creating a Widget**
+### **Creating a Built-in Tool**
 ```kotlin
 @Composable
-fun WeatherWidget(temperature: Int, condition: String) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            Icon(Icons.Filled.WbSunny, contentDescription = null)
-            Column {
-                Text("$temperature°F", style = MaterialTheme.typography.headlineMedium)
-                Text(condition, style = MaterialTheme.typography.bodyMedium)
-            }
+fun WeatherDisplay(weatherData: WeatherData) {
+    // Minimal, distraction-free display
+    Column(modifier = Modifier.padding(8.dp)) {
+        Text(
+            text = "${weatherData.temperature}°F ${weatherData.condition}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        if (weatherData.hasAlert) {
+            Text(
+                text = weatherData.alert,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
         }
     }
 }
 ```
 
-### **Mode Switching Logic**
+### **AI-Powered Action Routing**
 ```kotlin
-class AdaptiveUIManager {
-    fun determineMode(input: String, userPreference: UIMode): UIMode {
+class IntelligentActionRouter {
+    fun routeConversation(input: ConversationInput, context: AIContext): IntelligentAction {
+        val intent = aiEngine.extractIntent(input, context)
+        val preferences = learningEngine.getRelevantPreferences(intent)
+        
         return when {
-            userPreference == UIMode.USER_CHOICE -> userPreference
-            isComplexQuery(input) -> UIMode.CLASSIC
-            isQuickInfo(input) -> UIMode.WIDGET
-            else -> UIMode.HYBRID
+            intent.requiresDeepIntegration() -> DeepAndroidAction(intent, preferences)
+            intent.hasBuiltInTool() -> BuiltInToolAction(intent)
+            intent.needsSystemControl() -> SystemAction(intent, preferences)
+            else -> ConversationAction(intent)
         }
     }
 }
@@ -139,11 +148,12 @@ class AdaptiveUIManager {
 - Different screen sizes
 - With/without internet
 
-### **Mode Testing**
-- Verify all skills work in all modes
-- Test mode switching smoothness
-- Validate user preferences
-- Check accessibility in each mode
+### **Unified Experience Testing**
+- Verify all integrations work through conversation
+- Test AI understanding accuracy
+- Validate silent learning effectiveness
+- Check accessibility of unified interface
+- Test conversation flow continuity
 
 ### **Performance Testing**
 - Voice recognition accuracy
