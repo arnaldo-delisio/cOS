@@ -49,7 +49,7 @@ cos-core/app/src/main/java/os/conversational/cos/
 1. **Intelligent Android Control**
    - Deep photo/gallery filtering by natural language
    - Smart messaging routing based on learned preferences
-   - System control through conversation
+   - Settings shortcuts through conversation (WiFi settings, Bluetooth settings)
    - Content filtering with AI understanding
 
 2. **Built-in Tool Suite**
@@ -173,11 +173,12 @@ class ModelManager(context: Context) {
 
 ### **Testing the AI**
 ```kotlin
-// Example prompts to test
-"Show photos of Sarah from vacation"  // INTENT: SHOW_FILTERED_PHOTOS
+// Realistic prompts to test (launcher capabilities)
 "Calculate 15% tip on $50"           // INTENT: CALCULATE
-"Text mom I'm running late"          // INTENT: SEND_MESSAGE
-"Find pizza places nearby"           // INTENT: SEARCH_LOCATION
+"Open camera app"                    // INTENT: LAUNCH_APP
+"Show my files"                      // INTENT: FILE_MANAGEMENT
+"Open WiFi settings"                 // INTENT: SYSTEM_CONTROL (settings shortcut)
+"Set volume to 50%"                  // INTENT: SYSTEM_CONTROL (achievable)
 ```
 
 ## 💻 **Implementation Guidelines**

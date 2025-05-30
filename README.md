@@ -37,14 +37,17 @@ cOS is a revolutionary Android launcher that replaces app-hopping with natural c
 
 ### Example Interactions
 ```
-You: "Show photos of Sarah from vacation"
-→ Opens Gallery filtered to Sarah's photos from your last trip
+You: "Open camera app"
+→ Launches camera for you
 
-You: "Text mom I'm running late"  
-→ Sends message via your preferred app for that contact
+You: "Calculate 15% tip on $50"  
+→ Shows calculation result: $7.50
 
-You: "Find pizza places nearby"
-→ Opens Maps with pizza restaurant results and reviews
+You: "Open WiFi settings"
+→ Opens WiFi settings page for you to adjust
+
+You: "Set volume to 50%"
+→ Adjusts media volume to 50%
 ```
 
 ### The Interface
@@ -122,7 +125,7 @@ cd cOS
    - Model is stored securely in app storage
 3. Grant necessary permissions (microphone, storage)
 4. Set cOS as your default launcher (optional)
-5. Start with simple requests: "Open camera" or "Calculate 25 plus 30"
+5. Start with simple requests: "Open camera", "Calculate 25 plus 30", or "Open WiFi settings"
 6. The AI learns your preferences automatically
 
 ## 🎯 What Makes cOS Different

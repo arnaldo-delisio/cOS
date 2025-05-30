@@ -68,19 +68,19 @@ val modelPath = modelManager.getModelPath()
 ### 4. Testing
 
 Test the AI with various conversational inputs:
-- "Show photos of Sarah from vacation"
+- "Open camera app"
 - "Calculate 15% tip on $50"
-- "Text mom I'm running late"
-- "Find pizza places nearby"
+- "Open WiFi settings"
+- "Set volume to 50%"
 
 ## Architecture
 
 ```
 User Input → MediaPipe LLM → Structured Response → Intent + Action Data
      ↓                              ↓                        ↓
-Voice/Text              "INTENT: SHOW_FILTERED_PHOTOS"   ConversationEngine
-                        "RESPONSE: Finding photos..."     executes action
-                        "DATA: person:Sarah,..."
+Voice/Text              "INTENT: LAUNCH_APP"             ConversationEngine
+                        "RESPONSE: Opening camera..."     executes action
+                        "DATA: app:camera"
 ```
 
 ### Model Storage Architecture

@@ -12,15 +12,15 @@ import os.conversational.cos.widgets.SystemStatus
 
 /**
  * System control skill for managing device settings
+ * Focuses on achievable features: volume control, settings shortcuts, and system status
+ * Note: Many system toggles require user interaction due to Android security restrictions
  */
 class SystemControlSkill(private val context: Context) : ConversationalSkill() {
     
     override val requiredPermissions = listOf(
-        android.Manifest.permission.WRITE_SETTINGS,
-        android.Manifest.permission.BLUETOOTH,
-        android.Manifest.permission.BLUETOOTH_ADMIN,
+        android.Manifest.permission.MODIFY_AUDIO_SETTINGS,
         android.Manifest.permission.ACCESS_WIFI_STATE,
-        android.Manifest.permission.CHANGE_WIFI_STATE
+        android.Manifest.permission.BLUETOOTH
     )
     
     override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
@@ -35,14 +35,14 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         
         return try {
             when (command.action) {
-                SystemAction.WIFI_TOGGLE -> toggleWifi(command.enabled)
-                SystemAction.BLUETOOTH_TOGGLE -> toggleBluetooth(command.enabled)
-                SystemAction.DND_TOGGLE -> toggleDoNotDisturb(command.enabled, command.duration)
-                SystemAction.BRIGHTNESS_SET -> setBrightness(command.value)
+                SystemAction.WIFI_SETTINGS -> openWifiSettings()
+                SystemAction.BLUETOOTH_SETTINGS -> openBluetoothSettings()
+                SystemAction.DND_SETTINGS -> openDoNotDisturbSettings()
+                SystemAction.BRIGHTNESS_SETTINGS -> openBrightnessSettings()
                 SystemAction.VOLUME_SET -> setVolume(command.value)
-                SystemAction.AIRPLANE_MODE -> toggleAirplaneMode(command.enabled)
+                SystemAction.AIRPLANE_SETTINGS -> openAirplaneModeSettings()
                 SystemAction.SYSTEM_STATUS -> getSystemStatus()
-                else -> ConversationResponse.error("I don't understand that system command.")
+                else -> ConversationResponse.error("I don't understand that system command. Try 'open WiFi settings' or 'set volume to 50%'")
             }
         } catch (e: Exception) {
             ConversationResponse.error("System control failed: ${e.message}")
@@ -52,24 +52,19 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
     private fun parseSystemCommand(input: String): SystemCommand {
         return when {
             input.contains("wifi") || input.contains("wi-fi") -> {
-                val enabled = input.contains("on") || input.contains("enable") || input.contains("turn on")
-                SystemCommand(SystemAction.WIFI_TOGGLE, enabled = enabled)
+                SystemCommand(SystemAction.WIFI_SETTINGS)
             }
             
             input.contains("bluetooth") -> {
-                val enabled = input.contains("on") || input.contains("enable") || input.contains("turn on")
-                SystemCommand(SystemAction.BLUETOOTH_TOGGLE, enabled = enabled)
+                SystemCommand(SystemAction.BLUETOOTH_SETTINGS)
             }
             
             input.contains("do not disturb") || input.contains("dnd") || input.contains("silent") -> {
-                val enabled = !input.contains("off") && !input.contains("disable")
-                val duration = extractDuration(input)
-                SystemCommand(SystemAction.DND_TOGGLE, enabled = enabled, duration = duration)
+                SystemCommand(SystemAction.DND_SETTINGS)
             }
             
             input.contains("brightness") -> {
-                val value = extractPercentage(input) ?: 0.5f
-                SystemCommand(SystemAction.BRIGHTNESS_SET, value = value)
+                SystemCommand(SystemAction.BRIGHTNESS_SETTINGS)
             }
             
             input.contains("volume") -> {
@@ -78,8 +73,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
             }
             
             input.contains("airplane") || input.contains("flight mode") -> {
-                val enabled = input.contains("on") || input.contains("enable")
-                SystemCommand(SystemAction.AIRPLANE_MODE, enabled = enabled)
+                SystemCommand(SystemAction.AIRPLANE_SETTINGS)
             }
             
             input.contains("status") || input.contains("settings") -> {
@@ -90,105 +84,63 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         }
     }
     
-    private fun toggleWifi(enable: Boolean): ConversationResponse {
-        val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        
+    private fun openWifiSettings(): ConversationResponse {
         return try {
-            wifiManager.isWifiEnabled = enable
-            val status = if (enable) "enabled" else "disabled"
-            ConversationResponse.success(
-                "WiFi $status",
-                mapOf(
-                    "systemStatus" to SystemStatus(wifiEnabled = enable),
-                    "action" to "wifi_toggle"
-                )
-            )
-        } catch (e: Exception) {
-            ConversationResponse.error("Could not control WiFi. Please check permissions.")
-        }
-    }
-    
-    private fun toggleBluetooth(enable: Boolean): ConversationResponse {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        
-        if (bluetoothAdapter == null) {
-            return ConversationResponse.error("Bluetooth not supported on this device")
-        }
-        
-        return try {
-            if (enable && !bluetoothAdapter.isEnabled) {
-                // Note: In modern Android, you need to request user permission
-                val enableIntent = AndroidIntent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                context.startActivity(enableIntent)
-                ConversationResponse.success("Requesting to enable Bluetooth")
-            } else if (!enable && bluetoothAdapter.isEnabled) {
-                bluetoothAdapter.disable()
-                ConversationResponse.success(
-                    "Bluetooth disabled",
-                    mapOf(
-                        "systemStatus" to SystemStatus(bluetoothEnabled = false),
-                        "action" to "bluetooth_toggle"
-                    )
-                )
-            } else {
-                val status = if (bluetoothAdapter.isEnabled) "already enabled" else "already disabled"
-                ConversationResponse.success("Bluetooth is $status")
-            }
-        } catch (e: SecurityException) {
-            ConversationResponse.error("Bluetooth permission required")
-        }
-    }
-    
-    private fun toggleDoNotDisturb(enable: Boolean, duration: String): ConversationResponse {
-        // Note: Modern Android requires WRITE_SECURE_SETTINGS permission for DND
-        return try {
-            val intent = AndroidIntent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+            val intent = AndroidIntent(Settings.ACTION_WIFI_SETTINGS)
+            intent.flags = AndroidIntent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             
-            val message = if (enable) {
-                val durationText = if (duration.isNotEmpty()) " for $duration" else ""
-                "Opening Do Not Disturb settings to enable$durationText"
-            } else {
-                "Opening Do Not Disturb settings to disable"
-            }
-            
             ConversationResponse.success(
-                message,
-                mapOf(
-                    "systemStatus" to SystemStatus(doNotDisturbEnabled = enable, dndUntil = duration),
-                    "action" to "dnd_toggle"
-                )
+                "Opening WiFi settings for you",
+                mapOf("action" to "wifi_settings")
             )
         } catch (e: Exception) {
-            ConversationResponse.error("Could not access Do Not Disturb settings")
+            ConversationResponse.error("Could not open WiFi settings")
         }
     }
     
-    private fun setBrightness(value: Float): ConversationResponse {
+    private fun openBluetoothSettings(): ConversationResponse {
         return try {
-            // Note: Requires WRITE_SETTINGS permission
-            val brightnessValue = (value * 255).toInt()
-            Settings.System.putInt(
-                context.contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS_MODE,
-                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-            )
-            Settings.System.putInt(
-                context.contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS,
-                brightnessValue
-            )
+            val intent = AndroidIntent(Settings.ACTION_BLUETOOTH_SETTINGS)
+            intent.flags = AndroidIntent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
             
-            val percentage = (value * 100).toInt()
             ConversationResponse.success(
-                "Brightness set to $percentage%",
-                mapOf(
-                    "systemStatus" to SystemStatus(brightness = value),
-                    "action" to "brightness_set"
-                )
+                "Opening Bluetooth settings for you",
+                mapOf("action" to "bluetooth_settings")
             )
-        } catch (e: SecurityException) {
-            ConversationResponse.error("System settings permission required to change brightness")
+        } catch (e: Exception) {
+            ConversationResponse.error("Could not open Bluetooth settings")
+        }
+    }
+    
+    private fun openDoNotDisturbSettings(): ConversationResponse {
+        return try {
+            val intent = AndroidIntent(Settings.ACTION_SOUND_SETTINGS)
+            intent.flags = AndroidIntent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+            
+            ConversationResponse.success(
+                "Opening sound settings where you can adjust Do Not Disturb",
+                mapOf("action" to "dnd_settings")
+            )
+        } catch (e: Exception) {
+            ConversationResponse.error("Could not open sound settings")
+        }
+    }
+    
+    private fun openBrightnessSettings(): ConversationResponse {
+        return try {
+            val intent = AndroidIntent(Settings.ACTION_DISPLAY_SETTINGS)
+            intent.flags = AndroidIntent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+            
+            ConversationResponse.success(
+                "Opening display settings where you can adjust brightness",
+                mapOf("action" to "brightness_settings")
+            )
+        } catch (e: Exception) {
+            ConversationResponse.error("Could not open display settings")
         }
     }
     
@@ -213,16 +165,18 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         }
     }
     
-    private fun toggleAirplaneMode(enable: Boolean): ConversationResponse {
-        // Note: Requires system-level permissions in modern Android
+    private fun openAirplaneModeSettings(): ConversationResponse {
         return try {
-            val intent = AndroidIntent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+            val intent = AndroidIntent(Settings.ACTION_WIRELESS_SETTINGS)
+            intent.flags = AndroidIntent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             
-            val action = if (enable) "enable" else "disable"
-            ConversationResponse.success("Opening airplane mode settings to $action")
+            ConversationResponse.success(
+                "Opening network settings where you can toggle airplane mode",
+                mapOf("action" to "airplane_settings")
+            )
         } catch (e: Exception) {
-            ConversationResponse.error("Could not access airplane mode settings")
+            ConversationResponse.error("Could not open network settings")
         }
     }
     
@@ -294,12 +248,12 @@ data class SystemCommand(
 )
 
 enum class SystemAction {
-    WIFI_TOGGLE,
-    BLUETOOTH_TOGGLE,
-    DND_TOGGLE,
-    BRIGHTNESS_SET,
+    WIFI_SETTINGS,
+    BLUETOOTH_SETTINGS,
+    DND_SETTINGS,
+    BRIGHTNESS_SETTINGS,
     VOLUME_SET,
-    AIRPLANE_MODE,
+    AIRPLANE_SETTINGS,
     SYSTEM_STATUS,
     UNKNOWN
 }

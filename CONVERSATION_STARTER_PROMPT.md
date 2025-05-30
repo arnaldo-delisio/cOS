@@ -79,11 +79,11 @@ cos/
 
 ## Development Priorities
 1. Test all skills on physical devices
-2. Implement remaining system control features
+2. Improve settings shortcuts and user guidance
 3. Add communication features (SMS, calling)
 4. Optimize AI response time
 5. Add cross-app intelligent workflows
-6. Prepare for launcher mode transformation
+6. Prepare for launcher mode transformation (v0.2.0)
 
 ## Working Guidelines
 - **Philosophy**: This is ONE app, not a collection of features
@@ -121,6 +121,7 @@ adb logcat | grep -E "LocalAIEngine|ModelManager"
 - **Automatic Model Management**: ModelManager handles download/storage
 - **Progress UI**: Real-time download progress with retry capability
 - **Internal Storage**: Model stored in app's private directory
-- **All Skills Active**: Calculator, Files, Apps, Contacts, Navigation, System
+- **All Skills Active**: Calculator, Files, Apps, Contacts, Navigation, System (settings shortcuts)
+- **Realistic Capabilities**: Focus on launcher features, settings shortcuts, volume control
 
 Remember: cOS is about reimagining smartphone interaction through natural conversation, not just adding AI to existing paradigms.
