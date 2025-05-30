@@ -180,18 +180,18 @@ We welcome contributions to make phones more conversational and less distracting
 - 📝 Improve documentation and user guides
 - 🔧 Submit code improvements for the unified app
 
-See our [Contributing Guide](cos-docs/CONTRIBUTING.md) for details.
+See our [Contributing Guide](docs/CONTRIBUTING.md) for details.
 
 ## 📚 Documentation
 
-- **[Architecture](cos-docs/ARCHITECTURE.md)** - Technical design and components
-- **[Development Guide](cos-docs/DEVELOPMENT_GUIDE.md)** - Setup and development workflow  
-- **[Roadmap](cos-docs/ROADMAP.md)** - Feature timeline and planning
-- **[Vision Evolution](cos-docs/VISION_EVOLUTION.md)** - How our vision evolved
+- **[Architecture](docs/ARCHITECTURE.md)** - Technical design and components
+- **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** - Setup and development workflow  
+- **[Roadmap](docs/ROADMAP.md)** - Feature timeline and planning
+- **[Vision Evolution](docs/VISION_EVOLUTION.md)** - How our vision evolved
 
 ## 📄 License
 
-Licensed under the Apache License 2.0 - see [LICENSE](cos-docs/LICENSE) for details.
+Licensed under the Apache License 2.0 - see [LICENSE](docs/LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
