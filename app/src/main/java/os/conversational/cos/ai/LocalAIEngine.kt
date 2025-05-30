@@ -1,34 +1,59 @@
 package os.conversational.cos.ai
 
 import android.content.Context
+import android.util.Log
+import com.google.mediapipe.tasks.genai.llminference.LlmInference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.tensorflow.lite.Interpreter
-import java.nio.ByteBuffer
-import java.nio.channels.FileChannel
-import java.io.FileInputStream
-import java.io.IOException
+import java.io.File
 
 /**
- * Local AI engine for cOS using TensorFlow Lite
- * Handles on-device conversation understanding and intent extraction
+ * Local AI engine for cOS using MediaPipe LLM Inference API
+ * Handles on-device conversation understanding with Gemma 3n
  */
 class LocalAIEngine(private val context: Context) {
     
-    private var interpreter: Interpreter? = null
+    companion object {
+        private const val TAG = "LocalAIEngine"
+        private const val MODEL_PATH = "/data/local/tmp/llm/gemma-3n.bin"
+        private const val MAX_TOKENS = 1024
+        private const val TOP_K = 40
+        private const val TEMPERATURE = 0.8f
+        private const val RANDOM_SEED = 101
+    }
+    
+    private var llmInference: LlmInference? = null
     private var isInitialized = false
     
     /**
-     * Initialize the AI engine with local model
+     * Initialize the AI engine with Gemma 3n model via MediaPipe
      */
     suspend fun initialize(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                // TODO: Load actual Gemma 2B model when available
-                // For now, we'll create a placeholder that shows the structure
+                // Check if model file exists
+                val modelFile = File(MODEL_PATH)
+                if (!modelFile.exists()) {
+                    Log.e(TAG, "Model file not found at $MODEL_PATH. Please push gemma-3n.bin to device.")
+                    return@withContext false
+                }
+                
+                // Configure MediaPipe LLM Inference
+                val options = LlmInference.LlmInferenceOptions.builder()
+                    .setModelPath(MODEL_PATH)
+                    .setMaxTokens(MAX_TOKENS)
+                    .setTopK(TOP_K)
+                    .setTemperature(TEMPERATURE)
+                    .setRandomSeed(RANDOM_SEED)
+                    .build()
+                
+                // Create LLM Inference instance
+                llmInference = LlmInference.createFromOptions(context, options)
                 isInitialized = true
+                Log.i(TAG, "MediaPipe LLM Inference initialized successfully with Gemma 3n")
                 true
             } catch (e: Exception) {
+                Log.e(TAG, "Failed to initialize MediaPipe LLM", e)
                 e.printStackTrace()
                 false
             }
@@ -39,33 +64,124 @@ class LocalAIEngine(private val context: Context) {
      * Process conversation input and return intelligent response
      */
     suspend fun processConversation(input: ConversationInput): AIResponse {
-        if (!isInitialized) {
+        if (!isInitialized || llmInference == null) {
             return AIResponse.error("AI engine not initialized")
         }
         
         return withContext(Dispatchers.Default) {
             try {
-                // TODO: Replace with actual AI inference
-                // For now, use enhanced pattern matching as stepping stone
-                val intent = classifyIntentWithAI(input.text)
-                val confidence = calculateConfidence(input.text, intent)
+                // Build conversational prompt for Gemma 3n
+                val prompt = buildConversationalPrompt(input)
+                
+                // Generate response using MediaPipe LLM Inference
+                val startTime = System.currentTimeMillis()
+                val response = llmInference!!.generateResponse(prompt)
+                val inferenceTime = System.currentTimeMillis() - startTime
+                Log.d(TAG, "Inference completed in ${inferenceTime}ms")
+                
+                // Parse AI response to extract intent and action data
+                val parsedResponse = parseAIResponse(response, input.text)
                 
                 AIResponse.success(
-                    intent = intent,
-                    confidence = confidence,
-                    response = generateResponse(intent, input),
-                    actionData = extractActionData(intent, input.text)
+                    intent = parsedResponse.intent,
+                    confidence = parsedResponse.confidence,
+                    response = parsedResponse.naturalResponse,
+                    actionData = parsedResponse.actionData
                 )
             } catch (e: Exception) {
+                Log.e(TAG, "AI processing failed", e)
                 AIResponse.error("AI processing failed: ${e.message}")
             }
         }
     }
     
     /**
-     * Enhanced intent classification (stepping stone to full AI)
+     * Build a structured prompt for Gemma 3n that encourages intent extraction
      */
-    private fun classifyIntentWithAI(input: String): ConversationIntent {
+    private fun buildConversationalPrompt(input: ConversationInput): String {
+        val contextInfo = if (input.context.previousIntent != null) {
+            "Previous intent: ${input.context.previousIntent}"
+        } else {
+            "This is the start of a new conversation"
+        }
+        
+        return """You are cOS, a conversational Android assistant. Analyze the user's request and provide:
+1. The intent (one of: LIST_FILES, ORGANIZE_FILES, DELETE_FILES, LAUNCH_APP, LIST_APPS, SHOW_FILTERED_PHOTOS, SEND_MESSAGE, SEARCH_LOCATION, CALCULATE, or UNKNOWN)
+2. A natural, helpful response
+3. Any relevant data extracted from the request
+
+User request: "${input.text}"
+$contextInfo
+
+Respond in this format:
+INTENT: [intent_name]
+RESPONSE: [natural response to user]
+DATA: [any extracted data as key:value pairs]"""
+    }
+    
+    /**
+     * Parse the AI response to extract structured data
+     */
+    private fun parseAIResponse(aiOutput: String, originalInput: String): ParsedAIResponse {
+        val lines = aiOutput.lines()
+        var intent = ConversationIntent.UNKNOWN
+        var response = "I'll help you with that."
+        val actionData = mutableMapOf<String, Any>()
+        
+        for (line in lines) {
+            when {
+                line.startsWith("INTENT:") -> {
+                    val intentStr = line.substringAfter("INTENT:").trim()
+                    intent = try {
+                        ConversationIntent.valueOf(intentStr)
+                    } catch (e: Exception) {
+                        ConversationIntent.UNKNOWN
+                    }
+                }
+                line.startsWith("RESPONSE:") -> {
+                    response = line.substringAfter("RESPONSE:").trim()
+                }
+                line.startsWith("DATA:") -> {
+                    val dataStr = line.substringAfter("DATA:").trim()
+                    // Parse key:value pairs
+                    dataStr.split(",").forEach { pair ->
+                        val parts = pair.trim().split(":")
+                        if (parts.size == 2) {
+                            actionData[parts[0].trim()] = parts[1].trim()
+                        }
+                    }
+                }
+            }
+        }
+        
+        // If AI didn't provide structured response, fall back to pattern matching
+        if (intent == ConversationIntent.UNKNOWN) {
+            intent = classifyIntentWithPatterns(originalInput)
+            actionData.putAll(extractActionDataFromPatterns(intent, originalInput))
+        }
+        
+        return ParsedAIResponse(
+            intent = intent,
+            confidence = if (intent != ConversationIntent.UNKNOWN) 0.8f else 0.3f,
+            naturalResponse = response,
+            actionData = actionData
+        )
+    }
+    
+    /**
+     * Data class for parsed AI response
+     */
+    private data class ParsedAIResponse(
+        val intent: ConversationIntent,
+        val confidence: Float,
+        val naturalResponse: String,
+        val actionData: Map<String, Any>
+    )
+    
+    /**
+     * Fallback pattern matching when AI doesn't provide clear intent
+     */
+    private fun classifyIntentWithPatterns(input: String): ConversationIntent {
         val normalizedInput = input.lowercase().trim()
         
         return when {
@@ -83,7 +199,7 @@ class LocalAIEngine(private val context: Context) {
             normalizedInput.contains(Regex("show.*(apps?|applications?)")) -> 
                 ConversationIntent.LIST_APPS
             
-            // Smart queries (these need AI understanding)
+            // Smart queries
             normalizedInput.contains(Regex("show.*(photos?|pictures?).*(of|from)")) -> 
                 ConversationIntent.SHOW_FILTERED_PHOTOS
             normalizedInput.contains(Regex("(text|message|send).*(to|mom|dad)")) -> 
@@ -100,38 +216,9 @@ class LocalAIEngine(private val context: Context) {
     }
     
     /**
-     * Calculate confidence score for intent classification
+     * Extract action data using patterns when AI parsing fails
      */
-    private fun calculateConfidence(input: String, intent: ConversationIntent): Float {
-        // Simple confidence scoring - will be replaced by AI model confidence
-        return when (intent) {
-            ConversationIntent.UNKNOWN -> 0.1f
-            else -> if (input.length > 5) 0.8f else 0.6f
-        }
-    }
-    
-    /**
-     * Generate natural response for intent
-     */
-    private fun generateResponse(intent: ConversationIntent, input: ConversationInput): String {
-        return when (intent) {
-            ConversationIntent.LIST_FILES -> "I'll show you the files in your directory"
-            ConversationIntent.ORGANIZE_FILES -> "I'll organize your files by type"
-            ConversationIntent.DELETE_FILES -> "I'll clean up old files for you"
-            ConversationIntent.LAUNCH_APP -> "Opening the app for you"
-            ConversationIntent.LIST_APPS -> "Here are your installed apps"
-            ConversationIntent.SHOW_FILTERED_PHOTOS -> "Finding those photos for you"
-            ConversationIntent.SEND_MESSAGE -> "I'll help you send that message"
-            ConversationIntent.SEARCH_LOCATION -> "Searching for nearby locations"
-            ConversationIntent.CALCULATE -> "Let me calculate that for you"
-            ConversationIntent.UNKNOWN -> "I'm not sure how to help with that yet"
-        }
-    }
-    
-    /**
-     * Extract action data from conversation input
-     */
-    private fun extractActionData(intent: ConversationIntent, input: String): Map<String, Any> {
+    private fun extractActionDataFromPatterns(intent: ConversationIntent, input: String): Map<String, Any> {
         return when (intent) {
             ConversationIntent.SHOW_FILTERED_PHOTOS -> {
                 mapOf(
@@ -185,9 +272,14 @@ class LocalAIEngine(private val context: Context) {
      * Cleanup resources
      */
     fun cleanup() {
-        interpreter?.close()
-        interpreter = null
-        isInitialized = false
+        try {
+            llmInference?.close()
+            llmInference = null
+            isInitialized = false
+            Log.i(TAG, "MediaPipe LLM Inference cleaned up successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error during cleanup", e)
+        }
     }
 }
 
