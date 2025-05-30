@@ -1,41 +1,47 @@
 # cOS Development Roadmap - Unified Vision
 
-## 🎯 Current Focus: v0.1.0 - Unified Foundation
+## 🎯 Current Focus: v0.1.0 - Unified Foundation (May 2025)
 
-### Immediate Priorities (This Week)
-- [ ] Fix Vosk integration on physical devices
-- [ ] Implement clean unified chat interface
-- [ ] Integrate local AI (Gemma 2B) for conversation understanding
-- [ ] Test unified experience on 3+ different Android devices
+### **Current Status**
+- ✅ Basic Android app with voice recognition working
+- ✅ Simple skill-based conversation system
+- ❌ No AI integration (major gap)
+- ❌ No unified launcher interface
 
-### Core Features (Next 2 Weeks)
-- [ ] Deep Android integration layer
-- [ ] Silent preference learning engine
-- [ ] Built-in essential tools (PDF, calculator, notes)
-- [ ] Distraction-free onboarding flow
+### **Immediate Priorities (Next 2 Weeks)**
+- [ ] Set up development environment with AI dependencies
+- [ ] Research and prototype Gemma 2B integration
+- [ ] Refactor conversation engine for AI compatibility
+- [ ] Test AI inference performance on Android devices
 
-### Polish (Week 3-4)
-- [ ] AI response optimization for mobile
-- [ ] Accessibility features for unified interface
-- [ ] Documentation reflecting new vision
-- [ ] Beta release with unified experience
+### **Core Features (Next 1-2 Months)**
+- [ ] Integrate local AI (Gemma 2B) for intelligent conversation understanding
+- [ ] Build deep Android integration layer for smart app control
+- [ ] Implement unified conversational launcher interface
+- [ ] Add basic silent preference learning
+
+### **Polish (Month 3-4)**
+- [ ] Optimize AI performance for mobile devices
+- [ ] Implement built-in essential tools (PDF, calculator, notes)
+- [ ] Add accessibility features and gesture support
+- [ ] Prepare beta release with unified experience
 
 ## 📅 Version History & Planning
 
-### v0.1.0 - Unified Foundation Release (Target: End of Month)
-**Goal**: Stable unified conversational interface with AI understanding
+### v0.1.0 - AI Integration Foundation (Target: July 2025)
+**Goal**: Working local AI conversation understanding
 
 - ✅ Basic conversation engine
 - ✅ Voice input via Vosk
 - ✅ Text-to-speech responses
 - ✅ File management through conversation
 - ✅ App control through conversation
-- 🔄 Clean unified chat interface
 - 🔄 Local AI (Gemma 2B) integration
-- 📋 Device compatibility testing
-- 📋 Distraction-free onboarding
+- 🔄 Intelligent conversation understanding
+- 📋 AI performance optimization
+- 📋 Enhanced conversation context
 
-### v0.2.0 - Deep Integration (Target: Month 2)
+### v0.2.0 - Deep Integration (Target: September 2025)
 **Goal**: Intelligent app control and content filtering
 
 - 📋 Deep photo/gallery filtering (by person, date, context)
@@ -47,7 +53,7 @@
 - 📋 Cross-conversation context preservation
 - 📋 Intelligent contact and calendar integration
 
-### v0.3.0 - Advanced Intelligence (Target: Month 3)
+### v0.3.0 - Built-in Tools & Intelligence (Target: November 2025)
 **Goal**: Proactive AI and cross-app workflows
 
 - 📋 Cross-app intelligent workflows
@@ -80,7 +86,7 @@
 - 📋 Advanced gesture and voice shortcuts
 - 📋 Comprehensive error handling and recovery
 
-### v1.0.0 - Public Release (Target: Month 6)
+### v1.0.0 - Public Release (Target: January 2026)
 **Goal**: Production-ready unified conversational experience
 
 - 📋 Complete intelligent conversation library
