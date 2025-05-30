@@ -1,68 +1,73 @@
 # cOS Development Roadmap - Unified Vision
 
-## 🎯 Current Focus: v0.1.0 - Unified Foundation (May 2025)
+## 🎯 Current Focus: v0.1.0 - Conversational App (May 2025)
 
 ### **Current Status**
-- ✅ Basic Android app with voice recognition working
-- ✅ Simple skill-based conversation system
-- ❌ No Gemma 3n integration (major gap)
-- ❌ No unified launcher interface
+- ✅ Modern chat interface with voice and text input
+- ✅ MediaPipe LLM integration with Gemma 3n working
+- ✅ Voice recognition and text-to-speech
+- ✅ Basic conversational skills (calculator, file management)
+- 🔄 Building as regular app first, launcher transformation later
+
+### **Strategy: App-First Development**
+Building core conversational features as a regular Android app before transforming into a launcher. This approach reduces risk and allows faster iteration.
 
 ### **Immediate Priorities (Next 2 Weeks)**
-- [x] Set up development environment with AI dependencies
-- [x] Research and prototype Gemma 3n integration with MediaPipe
-- [x] Refactor conversation engine for AI compatibility
-- [ ] Test AI inference performance on Android devices
+- [x] Complete chat interface implementation
+- [x] MediaPipe AI integration working
+- [ ] System control skills (WiFi, Bluetooth, brightness)
+- [ ] Communication skills (SMS, calling)
+- [ ] Performance optimization (<200ms AI response)
 
 ### **Core Features (Next 1-2 Months)**
-- [ ] Integrate local AI (Gemma 2B) for intelligent conversation understanding
-- [ ] Build deep Android integration layer for smart app control
-- [ ] Implement unified conversational launcher interface
-- [ ] Add basic silent preference learning
+- [ ] All system control capabilities working
+- [ ] Reliable communication features
+- [ ] Enhanced utility functions (timers, alarms, notes)
+- [ ] Polished user experience with error handling
 
-### **Polish (Month 3-4)**
-- [ ] Optimize AI performance for mobile devices
-- [ ] Implement built-in essential tools (PDF, calculator, notes)
-- [ ] Add accessibility features and gesture support
-- [ ] Prepare beta release with unified experience
+### **Launcher Transformation (Month 3)**
+- [ ] Optional launcher mode
+- [ ] Home screen replacement
+- [ ] App drawer integration
+- [ ] Migration wizard from app to launcher
 
 ## 📅 Version History & Planning
 
-### v0.1.0 - AI Integration Foundation (Target: June 2025)
-**Goal**: Working Gemma 3n mobile-optimized conversation understanding
+### v0.1.0 - Conversational App (Target: June 2025)
+**Goal**: Fully functional conversational app with system control capabilities
 
-- ✅ Basic conversation engine
-- ✅ Voice input via Vosk
-- ✅ Text-to-speech responses
-- ✅ File management through conversation
-- ✅ App control through conversation
-- ✅ Local AI (Gemma 3n) integration with MediaPipe
-- ✅ Intelligent conversation understanding infrastructure
-- 📋 AI performance optimization (<300ms response time)
-- 📋 Enhanced conversation context with multimodal support
+- ✅ Modern chat interface with voice and text input
+- ✅ MediaPipe LLM integration with Gemma 3n
+- ✅ Voice recognition (Vosk) and text-to-speech
+- ✅ Basic skills (calculator, file management, app launching)
+- 🔄 System control skills (WiFi, Bluetooth, brightness, volume)
+- 🔄 Communication features (SMS sending, phone calls)
+- 📋 Utility enhancements (timers, alarms, notes)
+- 📋 AI performance optimization (<200ms response time)
+- 📋 Error handling and offline fallbacks
 
-### v0.2.0 - Deep Integration (Target: August 2025)
-**Goal**: Intelligent app control and content filtering
+### v0.2.0 - Launcher Transformation (Target: August 2025)
+**Goal**: Optional launcher mode with enhanced features
 
-- 📋 Deep photo/gallery filtering (by person, date, context)
+- 📋 Optional launcher mode (can still use as regular app)
+- 📋 Home screen replacement functionality
+- 📋 App drawer integration
+- 📋 Migration wizard from app to launcher
+- 📋 Enhanced utility functions (alarms, timers, notes)
+- 📋 Context-aware conversations
+- 📋 Smart app recommendations
+- 📋 Performance optimizations and battery efficiency
+
+### v0.3.0 - Deep Integration & Intelligence (Target: October 2025)
+**Goal**: Advanced AI features and deep Android integration
+
+- 📋 Deep photo/gallery filtering by natural language
 - 📋 Smart messaging routing (learns preferred apps per contact)
-- 📋 System control through conversation (WiFi, Bluetooth, settings)
-- 📋 Built-in tool suite (PDF viewer, calculator, notes)
-- 📋 Silent preference learning
-- 📋 Enhanced AI understanding with context
-- 📋 Cross-conversation context preservation
-- 📋 Intelligent contact and calendar integration
-
-### v0.3.0 - Built-in Tools & Intelligence (Target: October 2025)
-**Goal**: Proactive AI and cross-app workflows
-
 - 📋 Cross-app intelligent workflows
+- 📋 Accessibility service for advanced app control
+- 📋 Silent preference learning engine
 - 📋 Proactive AI suggestions based on context
-- 📋 Advanced content filtering with natural language
-- 📋 Intelligent app recommendations
-- 📋 Gesture shortcuts for power users
-- 📋 Enhanced silent learning capabilities
-- 📋 Developer API for deep integrations
+- 📋 Advanced content filtering capabilities
 
 ### v0.4.0 - Platform Integration (Target: Month 4)
 **Goal**: Deep Android platform integration

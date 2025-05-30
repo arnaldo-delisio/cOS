@@ -10,9 +10,16 @@ if ! adb devices | grep -q "device$"; then
     exit 1
 fi
 
-# Model URL - Update this with the actual Gemma 3n model URL
-MODEL_URL="https://huggingface.co/google/gemma-3n-2B-it-litert/resolve/main/gemma-3n-2B-it.bin"
+# Model URL - Using litert-community Gemma3 1B model (MediaPipe compatible)
+# Note: You may need to be logged into HuggingFace to download
+# Alternative: Use Kaggle-hosted gemma-2b-it-gpu-int4.bin for direct deployment
+MODEL_URL="https://huggingface.co/litert-community/Gemma3-1B-IT/resolve/main/gemma3-1b-it-int4.task"
 MODEL_FILE="gemma-3n.bin"
+
+# Alternative URLs (choose based on your device):
+# CPU 4-bit: https://www.kaggle.com/models/google/gemma/tfLite/gemma-2b-it-cpu-int4
+# GPU 4-bit: https://www.kaggle.com/models/google/gemma/tfLite/gemma-2b-it-gpu-int4
+# GPU 8-bit: https://www.kaggle.com/models/google/gemma/tfLite/gemma-2b-it-gpu-int8
 
 echo "1. Downloading Gemma 3n model..."
 echo "   This may take a while depending on your connection speed."

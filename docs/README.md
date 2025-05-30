@@ -7,8 +7,9 @@ Welcome to the cOS documentation! This directory contains all the technical docu
 ### Core Documentation
 - **[Architecture](ARCHITECTURE.md)** - System design and technical architecture
 - **[Development Guide](DEVELOPMENT_GUIDE.md)** - Setup instructions and development workflow
+- **[Development Plan](DEVELOPMENT_PLAN.md)** - Current development priorities and next steps
 - **[AI Integration](AI_INTEGRATION.md)** - MediaPipe LLM setup and Gemma 3n implementation
-- **[Roadmap](ROADMAP.md)** - Development timeline and feature planning
+- **[Roadmap](ROADMAP.md)** - Long-term vision and feature timeline
 
 
 ### Contributing

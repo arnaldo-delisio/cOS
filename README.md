@@ -138,11 +138,13 @@ cd cOS
 
 ## 🗺️ Roadmap
 
-### v0.1.0 - Foundation (Current)
-- ✅ Minimal launcher interface
-- ✅ Basic conversation engine
-- ✅ Local AI (Gemma 3n) integration via MediaPipe
-- 🔄 Essential conversational controls
+### v0.1.0 - Conversational App (Current)
+- ✅ Modern chat interface with voice and text input
+- ✅ MediaPipe LLM integration with Gemma 3n
+- ✅ Voice recognition (Vosk) and text-to-speech
+- ✅ Basic skills (calculator, file management, app launching)
+- 🔄 System control skills (WiFi, Bluetooth, brightness)
+- 🔄 Communication features (SMS, calling)
 
 ### v0.2.0 - Deep Integration
 - 📋 Intelligent photo/gallery filtering

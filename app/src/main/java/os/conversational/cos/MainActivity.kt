@@ -25,12 +25,15 @@ import os.conversational.cos.skills.AppControlSkill
 import os.conversational.cos.skills.FileManagementSkill
 import os.conversational.cos.skills.CalculatorSkill
 import os.conversational.cos.ui.theme.COSTheme
+import os.conversational.cos.ui.ChatInterface
+import os.conversational.cos.ui.ChatMessage
 import os.conversational.cos.voice.VoiceEngine
 
 class MainActivity : ComponentActivity() {
     
     private lateinit var voiceEngine: VoiceEngine
     private lateinit var conversationEngine: ConversationEngine
+    private var onVoiceMessage: ((String) -> Unit)? = null
     
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -102,17 +105,8 @@ class MainActivity : ComponentActivity() {
     private fun setupVoiceListener() {
         voiceEngine.addListener(object : VoiceEngine.VoiceListener {
             override fun onSpeechResult(text: String) {
-                lifecycleScope.launch {
-                    val response = conversationEngine.processInput(text)
-                    when (response) {
-                        is os.conversational.cos.core.ConversationResponse.Success -> {
-                            voiceEngine.speak(response.message)
-                        }
-                        is os.conversational.cos.core.ConversationResponse.Error -> {
-                            voiceEngine.speak("Sorry, ${response.message}")
-                        }
-                    }
-                }
+                // Send voice result to chat interface
+                onVoiceMessage?.invoke(text)
             }
             
             override fun onError(error: String) {
@@ -128,110 +122,72 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun COSMainScreen() {
         var isListening by remember { mutableStateOf(false) }
-        var lastCommand by remember { mutableStateOf("") }
-        var lastResponse by remember { mutableStateOf("") }
+        var messages by remember { mutableStateOf(listOf<ChatMessage>()) }
         
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "cOS",
-                fontSize = 48.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+        // Initialize with welcome message
+        LaunchedEffect(Unit) {
+            messages = listOf(
+                ChatMessage(
+                    text = "Hi! I'm cOS, your conversational assistant. Try saying 'Calculate 25 plus 30' or 'Turn on WiFi'.",
+                    isUser = false
+                )
             )
-            
-            Text(
-                text = "Conversational Operating System",
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
-            
-            Spacer(modifier = Modifier.height(48.dp))
-            
-            Button(
-                onClick = { 
-                    if (::voiceEngine.isInitialized) {
-                        if (isListening) {
-                            voiceEngine.stopListening()
-                            isListening = false
-                        } else {
-                            voiceEngine.startListening()
-                            isListening = true
-                        }
-                    }
+        }
+        
+        // Set up voice message handler
+        LaunchedEffect(Unit) {
+            onVoiceMessage = { voiceText ->
+                // Add user voice message and process it
+                processMessage(voiceText) { userMsg, aiMsg ->
+                    messages = messages + userMsg + aiMsg
                 }
-            ) {
-                Text(if (isListening) "🎙️ Stop Listening" else "🎤 Start Listening")
+                // Stop listening after receiving voice input
+                isListening = false
             }
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            if (lastCommand.isNotEmpty()) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Last Command:",
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Text(
-                            text = lastCommand,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+        }
+        
+        ChatInterface(
+            messages = messages,
+            isListening = isListening,
+            onSendMessage = { message ->
+                processMessage(message) { userMsg, aiMsg ->
+                    messages = messages + userMsg + aiMsg
+                }
+            },
+            onVoiceClick = {
+                if (::voiceEngine.isInitialized) {
+                    if (isListening) {
+                        voiceEngine.stopListening()
+                        isListening = false
+                    } else {
+                        voiceEngine.startListening()
+                        isListening = true
                     }
                 }
             }
-            
-            if (lastResponse.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer
-                    )
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Response:",
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                        Text(
-                            text = lastResponse,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
+        )
+    }
+    
+    private fun processMessage(
+        message: String,
+        onResult: (ChatMessage, ChatMessage) -> Unit
+    ) {
+        val userMessage = ChatMessage(text = message, isUser = true)
+        
+        lifecycleScope.launch {
+            val response = conversationEngine.processInput(message)
+            val responseText = when (response) {
+                is os.conversational.cos.core.ConversationResponse.Success -> response.message
+                is os.conversational.cos.core.ConversationResponse.Error -> "Sorry, ${response.message}"
             }
             
-            Spacer(modifier = Modifier.height(48.dp))
+            val aiMessage = ChatMessage(text = responseText, isUser = false)
+            onResult(userMessage, aiMessage)
             
-            Text(
-                text = "Try saying:\n• \"Show photos of Sarah from vacation\"\n• \"Calculate 15% tip on \$50\"\n• \"List files in downloads\"\n• \"Text mom I'm running late\"",
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                textAlign = TextAlign.Center
-            )
-            
-            Spacer(modifier = Modifier.height(24.dp))
-            
-            Text(
-                text = "🤖 AI-Powered Conversation (Beta)",
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
+            // Speak the response
+            if (::voiceEngine.isInitialized) {
+                voiceEngine.speak(responseText)
+            }
         }
     }
     
