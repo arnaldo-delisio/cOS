@@ -24,6 +24,9 @@ import os.conversational.cos.core.ConversationEngine
 import os.conversational.cos.skills.AppControlSkill
 import os.conversational.cos.skills.FileManagementSkill
 import os.conversational.cos.skills.CalculatorSkill
+import os.conversational.cos.skills.ContactsSkill
+import os.conversational.cos.skills.SystemControlSkill
+import os.conversational.cos.skills.NavigationSkill
 import os.conversational.cos.ui.theme.COSTheme
 import os.conversational.cos.ui.ChatInterface
 import os.conversational.cos.ui.ChatMessage
@@ -69,6 +72,9 @@ class MainActivity : ComponentActivity() {
         conversationEngine.registerSkill("file", FileManagementSkill(this))
         conversationEngine.registerSkill("app", AppControlSkill(this))
         conversationEngine.registerSkill("calculator", CalculatorSkill(this))
+        conversationEngine.registerSkill("contacts", ContactsSkill(this))
+        conversationEngine.registerSkill("system", SystemControlSkill(this))
+        conversationEngine.registerSkill("navigation", NavigationSkill(this))
     }
     
     private fun requestPermissions() {

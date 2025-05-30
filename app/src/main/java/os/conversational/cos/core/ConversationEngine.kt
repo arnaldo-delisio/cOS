@@ -69,6 +69,15 @@ class ConversationEngine(private val context: Context) {
             ConversationIntent.LAUNCH_APP,
             ConversationIntent.LIST_APPS -> Intent.APP_CONTROL
             
+            ConversationIntent.ADJUST_SETTINGS,
+            ConversationIntent.TOGGLE_FEATURE -> Intent.SYSTEM_CONTROL
+            
+            ConversationIntent.MAKE_CALL,
+            ConversationIntent.SEND_MESSAGE -> Intent.COMMUNICATION
+            
+            ConversationIntent.GET_DIRECTIONS,
+            ConversationIntent.NAVIGATE -> Intent.NAVIGATION
+            
             else -> Intent.UNKNOWN
         }
     }
@@ -87,6 +96,12 @@ class ConversationEngine(private val context: Context) {
             input.contains("file", ignoreCase = true) -> Intent.FILE_MANAGEMENT
             input.contains("app", ignoreCase = true) -> Intent.APP_CONTROL  
             input.contains("setting", ignoreCase = true) -> Intent.SYSTEM_CONTROL
+            input.contains("call", ignoreCase = true) || 
+                input.contains("contact", ignoreCase = true) || 
+                input.contains("message", ignoreCase = true) -> Intent.COMMUNICATION
+            input.contains("navigate", ignoreCase = true) || 
+                input.contains("direction", ignoreCase = true) || 
+                input.contains("map", ignoreCase = true) -> Intent.NAVIGATION
             else -> Intent.UNKNOWN
         }
     }
@@ -117,6 +132,8 @@ enum class Intent {
     APP_CONTROL,
     SYSTEM_CONTROL,
     PHONE_CONTROL,
+    COMMUNICATION,
+    NAVIGATION,
     UNKNOWN
 }
 

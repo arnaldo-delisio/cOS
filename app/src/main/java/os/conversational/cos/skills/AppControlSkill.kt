@@ -1,7 +1,7 @@
 package os.conversational.cos.skills
 
 import android.content.Context
-import android.content.Intent
+import android.content.Intent as AndroidIntent
 import android.content.pm.PackageManager
 import os.conversational.cos.core.*
 
@@ -13,7 +13,7 @@ class AppControlSkill(private val context: Context) : ConversationalSkill() {
     
     override val requiredPermissions = listOf<String>()
     
-    override fun canHandle(intent: Intent): Boolean {
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
         return intent == os.conversational.cos.core.Intent.APP_CONTROL
     }
     

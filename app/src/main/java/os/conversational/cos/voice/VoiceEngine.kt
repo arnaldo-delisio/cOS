@@ -58,14 +58,14 @@ class VoiceEngine(private val context: Context) {
                 speechService = SpeechService(recognizer, 16000.0f)
                 speechService?.addListener(object : RecognitionListener {
                     override fun onResult(hypothesis: String?) {
-                        hypothesis?.let { 
-                            listeners.forEach { it.onSpeechResult(it) }
+                        hypothesis?.let { result ->
+                            listeners.forEach { it.onSpeechResult(result) }
                         }
                     }
                     
                     override fun onFinalResult(hypothesis: String?) {
-                        hypothesis?.let {
-                            listeners.forEach { it.onSpeechResult(it) }
+                        hypothesis?.let { result ->
+                            listeners.forEach { it.onSpeechResult(result) }
                         }
                         stopListening()
                     }

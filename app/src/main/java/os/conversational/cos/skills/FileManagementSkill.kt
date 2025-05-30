@@ -18,7 +18,7 @@ class FileManagementSkill(private val context: Context) : ConversationalSkill() 
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
     
-    override fun canHandle(intent: Intent): Boolean {
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
         return intent == Intent.FILE_MANAGEMENT
     }
     

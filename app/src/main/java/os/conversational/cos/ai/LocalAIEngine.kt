@@ -106,7 +106,7 @@ class LocalAIEngine(private val context: Context) {
         }
         
         return """You are cOS, a conversational Android assistant. Analyze the user's request and provide:
-1. The intent (one of: LIST_FILES, ORGANIZE_FILES, DELETE_FILES, LAUNCH_APP, LIST_APPS, SHOW_FILTERED_PHOTOS, SEND_MESSAGE, SEARCH_LOCATION, CALCULATE, or UNKNOWN)
+1. The intent (one of: LIST_FILES, ORGANIZE_FILES, DELETE_FILES, LAUNCH_APP, LIST_APPS, SHOW_FILTERED_PHOTOS, SEND_MESSAGE, SEARCH_LOCATION, ADJUST_SETTINGS, TOGGLE_FEATURE, MAKE_CALL, GET_DIRECTIONS, NAVIGATE, CALCULATE, or UNKNOWN)
 2. A natural, helpful response
 3. Any relevant data extracted from the request
 
@@ -206,6 +206,22 @@ DATA: [any extracted data as key:value pairs]"""
                 ConversationIntent.SEND_MESSAGE
             normalizedInput.contains(Regex("find.*(nearby|pizza|restaurant)")) -> 
                 ConversationIntent.SEARCH_LOCATION
+            
+            // System control
+            normalizedInput.contains(Regex("(turn|set|toggle).*(wifi|bluetooth|brightness|volume|dnd|disturb)")) -> 
+                ConversationIntent.TOGGLE_FEATURE
+            normalizedInput.contains(Regex("(adjust|change|modify).*(setting|brightness|volume)")) -> 
+                ConversationIntent.ADJUST_SETTINGS
+            
+            // Communication
+            normalizedInput.contains(Regex("(call|phone|dial)")) -> 
+                ConversationIntent.MAKE_CALL
+                
+            // Navigation
+            normalizedInput.contains(Regex("(directions|navigate|route).*(to|from)")) -> 
+                ConversationIntent.GET_DIRECTIONS
+            normalizedInput.contains(Regex("(take me|navigate|go).*(to|home)")) -> 
+                ConversationIntent.NAVIGATE
             
             // Calculator
             normalizedInput.contains(Regex("calculate|\\d+\\s*[+\\-*/]\\s*\\d+")) -> 
@@ -343,6 +359,17 @@ enum class ConversationIntent {
     SHOW_FILTERED_PHOTOS,
     SEND_MESSAGE,
     SEARCH_LOCATION,
+    
+    // System control
+    ADJUST_SETTINGS,
+    TOGGLE_FEATURE,
+    
+    // Communication
+    MAKE_CALL,
+    
+    // Navigation
+    GET_DIRECTIONS,
+    NAVIGATE,
     
     // Built-in tools
     CALCULATE,

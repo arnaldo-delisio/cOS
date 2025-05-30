@@ -5,9 +5,10 @@ import android.net.wifi.WifiManager
 import android.bluetooth.BluetoothAdapter
 import android.media.AudioManager
 import android.provider.Settings
-import android.content.Intent
+import android.content.Intent as AndroidIntent
 import os.conversational.cos.core.*
 import os.conversational.cos.widgets.SystemSettings
+import os.conversational.cos.widgets.SystemStatus
 
 /**
  * System control skill for managing device settings
@@ -22,7 +23,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         android.Manifest.permission.CHANGE_WIFI_STATE
     )
     
-    override fun canHandle(intent: Intent): Boolean {
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
         return intent == os.conversational.cos.core.Intent.SYSTEM_CONTROL
     }
     
@@ -98,7 +99,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
             ConversationResponse.success(
                 "WiFi $status",
                 mapOf(
-                    "systemSettings" to SystemSettings(wifiEnabled = enable),
+                    "systemStatus" to SystemStatus(wifiEnabled = enable),
                     "action" to "wifi_toggle"
                 )
             )
@@ -117,7 +118,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         return try {
             if (enable && !bluetoothAdapter.isEnabled) {
                 // Note: In modern Android, you need to request user permission
-                val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                val enableIntent = AndroidIntent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 context.startActivity(enableIntent)
                 ConversationResponse.success("Requesting to enable Bluetooth")
             } else if (!enable && bluetoothAdapter.isEnabled) {
@@ -125,7 +126,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
                 ConversationResponse.success(
                     "Bluetooth disabled",
                     mapOf(
-                        "systemSettings" to SystemSettings(bluetoothEnabled = false),
+                        "systemStatus" to SystemStatus(bluetoothEnabled = false),
                         "action" to "bluetooth_toggle"
                     )
                 )
@@ -141,7 +142,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
     private fun toggleDoNotDisturb(enable: Boolean, duration: String): ConversationResponse {
         // Note: Modern Android requires WRITE_SECURE_SETTINGS permission for DND
         return try {
-            val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+            val intent = AndroidIntent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             context.startActivity(intent)
             
             val message = if (enable) {
@@ -154,7 +155,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
             ConversationResponse.success(
                 message,
                 mapOf(
-                    "systemSettings" to SystemSettings(doNotDisturbEnabled = enable, dndUntil = duration),
+                    "systemStatus" to SystemStatus(doNotDisturbEnabled = enable, dndUntil = duration),
                     "action" to "dnd_toggle"
                 )
             )
@@ -182,7 +183,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
             ConversationResponse.success(
                 "Brightness set to $percentage%",
                 mapOf(
-                    "systemSettings" to SystemSettings(brightness = value),
+                    "systemStatus" to SystemStatus(brightness = value),
                     "action" to "brightness_set"
                 )
             )
@@ -203,7 +204,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
             ConversationResponse.success(
                 "Volume set to $percentage%",
                 mapOf(
-                    "systemSettings" to SystemSettings(volumeLevel = value),
+                    "systemStatus" to SystemStatus(volumeLevel = value),
                     "action" to "volume_set"
                 )
             )
@@ -215,7 +216,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
     private fun toggleAirplaneMode(enable: Boolean): ConversationResponse {
         // Note: Requires system-level permissions in modern Android
         return try {
-            val intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+            val intent = AndroidIntent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
             context.startActivity(intent)
             
             val action = if (enable) "enable" else "disable"
@@ -235,7 +236,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         val volumeLevel = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat() / 
                          audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         
-        val settings = SystemSettings(
+        val status = SystemStatus(
             wifiEnabled = wifiEnabled,
             bluetoothEnabled = bluetoothEnabled,
             volumeLevel = volumeLevel
@@ -244,7 +245,7 @@ class SystemControlSkill(private val context: Context) : ConversationalSkill() {
         return ConversationResponse.success(
             "Here are your current system settings",
             mapOf(
-                "systemSettings" to settings,
+                "systemStatus" to status,
                 "action" to "system_status"
             )
         )

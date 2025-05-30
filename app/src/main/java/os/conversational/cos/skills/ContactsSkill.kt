@@ -1,7 +1,7 @@
 package os.conversational.cos.skills
 
 import android.content.Context
-import android.content.Intent
+import android.content.Intent as AndroidIntent
 import android.net.Uri
 import android.provider.ContactsContract
 import android.database.Cursor
@@ -20,7 +20,7 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         Manifest.permission.SEND_SMS
     )
     
-    override fun canHandle(intent: Intent): Boolean {
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
         return intent == os.conversational.cos.core.Intent.COMMUNICATION
     }
     
@@ -77,7 +77,7 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         val contact = if (contactName.isNotEmpty()) {
             findContactByName(contactName)
         } else if (phoneNumber.isNotEmpty()) {
-            Contact("", phoneNumber)
+            Contact("unknown", "", phoneNumber)
         } else {
             return ConversationResponse.error("Please specify who to call")
         }
@@ -91,7 +91,7 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         }
         
         // Make the call
-        val callIntent = Intent(Intent.ACTION_CALL).apply {
+        val callIntent = AndroidIntent(AndroidIntent.ACTION_CALL).apply {
             data = Uri.parse("tel:${contact.phoneNumber}")
         }
         
@@ -114,7 +114,7 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         val contact = if (contactName.isNotEmpty()) {
             findContactByName(contactName)
         } else if (phoneNumber.isNotEmpty()) {
-            Contact("", phoneNumber)
+            Contact("unknown", "", phoneNumber)
         } else {
             return ConversationResponse.error("Please specify who to text")
         }
@@ -124,7 +124,7 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         }
         
         // Open messaging app with pre-filled message
-        val smsIntent = Intent(Intent.ACTION_SENDTO).apply {
+        val smsIntent = AndroidIntent(AndroidIntent.ACTION_SENDTO).apply {
             data = Uri.parse("smsto:${contact.phoneNumber}")
             if (message.isNotEmpty()) {
                 putExtra("sms_body", message)
@@ -169,10 +169,10 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
             return ConversationResponse.error("No email address found for ${contact.name}")
         }
         
-        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+        val emailIntent = AndroidIntent(AndroidIntent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:$emailAddress")
             if (message.isNotEmpty()) {
-                putExtra(Intent.EXTRA_TEXT, message)
+                putExtra(AndroidIntent.EXTRA_TEXT, message)
             }
         }
         
@@ -210,9 +210,9 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
     private fun listRecentContacts(): ConversationResponse {
         // Mock recent contacts - in production, get from call log or contacts
         val recentContacts = listOf(
-            Contact("Mom", "+1234567890", "mom@email.com"),
-            Contact("John", "+1987654321", "john@email.com"),
-            Contact("Sarah", "+1122334455", "sarah@email.com")
+            Contact("mom-id", "Mom", "+1234567890", "mom@email.com"),
+            Contact("john-id", "John", "+1987654321", "john@email.com"),
+            Contact("sarah-id", "Sarah", "+1122334455", "sarah@email.com")
         )
         
         return ConversationResponse.success(
@@ -226,11 +226,11 @@ class ContactsSkill(private val context: Context) : ConversationalSkill() {
         
         // Mock contact lookup - in production, query contacts database
         val mockContacts = mapOf(
-            "mom" to Contact("Mom", "+1234567890", "mom@email.com"),
-            "john" to Contact("John", "+1987654321", "john@email.com"),
-            "sarah" to Contact("Sarah", "+1122334455", "sarah@email.com"),
-            "dad" to Contact("Dad", "+1555666777", "dad@email.com"),
-            "mike" to Contact("Mike", "+1999888777", "mike@email.com")
+            "mom" to Contact("mom-id", "Mom", "+1234567890", "mom@email.com"),
+            "john" to Contact("john-id", "John", "+1987654321", "john@email.com"),
+            "sarah" to Contact("sarah-id", "Sarah", "+1122334455", "sarah@email.com"),
+            "dad" to Contact("dad-id", "Dad", "+1555666777", "dad@email.com"),
+            "mike" to Contact("mike-id", "Mike", "+1999888777", "mike@email.com")
         )
         
         return mockContacts[name.lowercase()]

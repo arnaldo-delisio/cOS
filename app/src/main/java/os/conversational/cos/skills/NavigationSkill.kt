@@ -1,7 +1,7 @@
 package os.conversational.cos.skills
 
 import android.content.Context
-import android.content.Intent
+import android.content.Intent as AndroidIntent
 import android.net.Uri
 import os.conversational.cos.core.*
 
@@ -15,7 +15,7 @@ class NavigationSkill(private val context: Context) : ConversationalSkill() {
         android.Manifest.permission.ACCESS_COARSE_LOCATION
     )
     
-    override fun canHandle(intent: Intent): Boolean {
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
         return intent == os.conversational.cos.core.Intent.NAVIGATION
     }
     
@@ -70,7 +70,7 @@ class NavigationSkill(private val context: Context) : ConversationalSkill() {
         )
         
         // Open Google Maps for actual navigation
-        val mapsIntent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=$destination"))
+        val mapsIntent = AndroidIntent(AndroidIntent.ACTION_VIEW, Uri.parse("google.navigation:q=$destination"))
         mapsIntent.setPackage("com.google.android.apps.maps")
         
         if (mapsIntent.resolveActivity(context.packageManager) != null) {

@@ -12,8 +12,8 @@ class CalculatorSkill(private val context: Context) : ConversationalSkill() {
     
     override val requiredPermissions = listOf<String>()
     
-    override fun canHandle(intent: Intent): Boolean {
-        return intent == Intent.UNKNOWN // We'll handle this through AI routing
+    override fun canHandle(intent: os.conversational.cos.core.Intent): Boolean {
+        return intent == os.conversational.cos.core.Intent.UNKNOWN // We'll handle this through AI routing
     }
     
     override suspend fun processConversation(
