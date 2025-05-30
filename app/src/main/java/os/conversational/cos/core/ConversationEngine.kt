@@ -14,10 +14,32 @@ class ConversationEngine(private val context: Context) {
     private lateinit var aiEngine: LocalAIEngine
     
     /**
+     * Check if AI model is available
+     */
+    suspend fun isModelAvailable(): Boolean {
+        if (!::aiEngine.isInitialized) {
+            aiEngine = LocalAIEngine(context)
+        }
+        return aiEngine.isModelAvailable()
+    }
+    
+    /**
+     * Get the model manager for download operations
+     */
+    fun getModelManager(): os.conversational.cos.ai.ModelManager {
+        if (!::aiEngine.isInitialized) {
+            aiEngine = LocalAIEngine(context)
+        }
+        return aiEngine.getModelManager()
+    }
+    
+    /**
      * Initialize the conversation engine with AI
      */
     suspend fun initialize(): Boolean {
-        aiEngine = LocalAIEngine(context)
+        if (!::aiEngine.isInitialized) {
+            aiEngine = LocalAIEngine(context)
+        }
         return aiEngine.initialize()
     }
     

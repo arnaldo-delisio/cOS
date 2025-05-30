@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import os.conversational.cos.core.ConversationEngine
+import os.conversational.cos.ai.ModelManager
 import os.conversational.cos.skills.AppControlSkill
 import os.conversational.cos.skills.FileManagementSkill
 import os.conversational.cos.skills.CalculatorSkill
@@ -30,6 +32,7 @@ import os.conversational.cos.skills.NavigationSkill
 import os.conversational.cos.ui.theme.COSTheme
 import os.conversational.cos.ui.ChatInterface
 import os.conversational.cos.ui.ChatMessage
+import os.conversational.cos.ui.ModelDownloadDialog
 import os.conversational.cos.voice.VoiceEngine
 
 class MainActivity : ComponentActivity() {
@@ -129,15 +132,28 @@ class MainActivity : ComponentActivity() {
     fun COSMainScreen() {
         var isListening by remember { mutableStateOf(false) }
         var messages by remember { mutableStateOf(listOf<ChatMessage>()) }
+        var showModelDownload by remember { mutableStateOf(false) }
+        var downloadProgress by remember { mutableStateOf<ModelManager.DownloadProgress?>(null) }
         
-        // Initialize with welcome message
+        // Check if model is available and show download if needed
         LaunchedEffect(Unit) {
-            messages = listOf(
-                ChatMessage(
-                    text = "Hi! I'm cOS, your conversational assistant. Try saying 'Calculate 25 plus 30' or 'Turn on WiFi'.",
-                    isUser = false
+            val modelAvailable = conversationEngine.isModelAvailable()
+            if (!modelAvailable) {
+                showModelDownload = true
+                messages = listOf(
+                    ChatMessage(
+                        text = "Welcome to cOS! To enable AI features, please download the AI model first.",
+                        isUser = false
+                    )
                 )
-            )
+            } else {
+                messages = listOf(
+                    ChatMessage(
+                        text = "Hi! I'm cOS, your conversational assistant. Try saying 'Calculate 25 plus 30' or 'Turn on WiFi'.",
+                        isUser = false
+                    )
+                )
+            }
         }
         
         // Set up voice message handler
@@ -150,6 +166,36 @@ class MainActivity : ComponentActivity() {
                 // Stop listening after receiving voice input
                 isListening = false
             }
+        }
+        
+        // Show model download dialog if needed
+        if (showModelDownload) {
+            ModelDownloadDialog(
+                downloadProgress = downloadProgress,
+                onDownloadClick = {
+                    lifecycleScope.launch {
+                        conversationEngine.getModelManager().downloadModel().collectLatest { progress ->
+                            downloadProgress = progress
+                            if (progress.status == ModelManager.DownloadStatus.COMPLETED) {
+                                // Reinitialize conversation engine with model
+                                val initialized = conversationEngine.initialize()
+                                if (initialized) {
+                                    messages = listOf(
+                                        ChatMessage(
+                                            text = "Great! AI features are now enabled. How can I help you today?",
+                                            isUser = false
+                                        )
+                                    )
+                                }
+                                showModelDownload = false
+                            }
+                        }
+                    }
+                },
+                onDismiss = {
+                    showModelDownload = false
+                }
+            )
         }
         
         ChatInterface(

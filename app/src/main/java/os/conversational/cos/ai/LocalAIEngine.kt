@@ -15,7 +15,6 @@ class LocalAIEngine(private val context: Context) {
     
     companion object {
         private const val TAG = "LocalAIEngine"
-        private const val MODEL_PATH = "/data/local/tmp/llm/gemma-3n.bin"
         private const val MAX_TOKENS = 1024
         private const val TOP_K = 40
         private const val TEMPERATURE = 0.8f
@@ -24,6 +23,17 @@ class LocalAIEngine(private val context: Context) {
     
     private var llmInference: LlmInference? = null
     private var isInitialized = false
+    private val modelManager = ModelManager(context)
+    
+    /**
+     * Check if model is available for initialization
+     */
+    suspend fun isModelAvailable(): Boolean = modelManager.isModelAvailable()
+    
+    /**
+     * Get the model manager for download operations
+     */
+    fun getModelManager(): ModelManager = modelManager
     
     /**
      * Initialize the AI engine with Gemma 3n model via MediaPipe
@@ -31,16 +41,18 @@ class LocalAIEngine(private val context: Context) {
     suspend fun initialize(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                // Check if model file exists
-                val modelFile = File(MODEL_PATH)
-                if (!modelFile.exists()) {
-                    Log.e(TAG, "Model file not found at $MODEL_PATH. Please push gemma-3n.bin to device.")
+                // Check if model is available
+                if (!modelManager.isModelAvailable()) {
+                    Log.e(TAG, "Model file not found. Please download the AI model through the app.")
                     return@withContext false
                 }
                 
+                val modelPath = modelManager.getModelPath()
+                Log.d(TAG, "Initializing with model at: $modelPath")
+                
                 // Configure MediaPipe LLM Inference
                 val options = LlmInference.LlmInferenceOptions.builder()
-                    .setModelPath(MODEL_PATH)
+                    .setModelPath(modelPath)
                     .setMaxTokens(MAX_TOKENS)
                     .setTopK(TOP_K)
                     .setTemperature(TEMPERATURE)
