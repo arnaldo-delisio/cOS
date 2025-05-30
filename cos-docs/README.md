@@ -1,118 +1,53 @@
-# cOS - Conversational Operating System
+# cOS Documentation
 
-> **Transform any Android device into a voice-first, privacy-respecting, fully conversational smartphone experience.**
+Welcome to the cOS documentation! This directory contains all the technical documentation, guides, and resources for developers and contributors.
 
-## 🌟 Vision
+## 📚 Documentation Index
 
-cOS replaces traditional touch interfaces with natural conversation, making smartphones truly accessible to everyone. Built on proven open-source components, it offers a privacy-first alternative to Big Tech assistants.
+### Core Documentation
+- **[Architecture](ARCHITECTURE.md)** - System design and technical architecture
+- **[Development Guide](DEVELOPMENT_GUIDE.md)** - Setup instructions and development workflow
+- **[Roadmap](ROADMAP.md)** - Development timeline and feature planning
 
-## 🚀 **Two Revolutionary Approaches**
+### Contributing
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to cOS
+- **[License](LICENSE)** - Apache 2.0 license terms
 
-### 🎯 **Main Branch - Traditional Conversational OS**
-The foundational conversational operating system with:
-- Voice-to-text processing (Vosk)
-- Conversational skills system
-- File management through voice
-- App control via conversation
-- Traditional Android app integration
+### Archives
+- **[Archive](archive/)** - Historical documentation and deprecated guides
 
-**Perfect for:** Users who want conversational control while keeping familiar Android interface
+## 🚀 Quick Links
 
-### ⌚ **Smartwatch Branch - Contextual Widget Interface** 
-Revolutionary smartwatch-like phone experience with:
-- Apps surface contextually within conversation
-- Minimal, clean interface (no app grid)
-- Predictive widget system
-- Background intelligent app orchestration
-- Conversation-centric design paradigm
+- **Main Repository**: [github.com/arnaldo-delisio/cos](https://github.com/arnaldo-delisio/cos)
+- **Issues**: [Report bugs or request features](https://github.com/arnaldo-delisio/cos/issues)
+- **Discussions**: [Community forum](https://github.com/arnaldo-delisio/cos/discussions)
 
-**Perfect for:** Users who want a completely reimagined mobile interface
+## 📖 Getting Started
 
-## 🏗️ Architecture (Main Branch)
+If you're new to cOS, we recommend reading the documentation in this order:
 
-### Core Components
-```
-┌─────────────────────┐
-│   Voice Interface   │ ← User speaks/types
-├─────────────────────┤
-│ Conversation Engine │ ← LLM + Intent Classification  
-├─────────────────────┤
-│   Skill Router      │ ← Route to appropriate skill
-├─────────────────────┤
-│      Skills         │ ← File, System, App, Device
-├─────────────────────┤
-│  Component APIs     │ ← Material Files, Easer, etc.
-├─────────────────────┤
-│  Android System     │ ← Native Android APIs
-└─────────────────────┘
-```
+1. Start with the main [README](../README.md) for an overview
+2. Read the [Architecture](ARCHITECTURE.md) to understand the system design
+3. Follow the [Development Guide](DEVELOPMENT_GUIDE.md) to set up your environment
+4. Check the [Roadmap](ROADMAP.md) to see what's planned
+5. Review the [Contributing Guide](CONTRIBUTING.md) before submitting code
 
-### Built On
-- **Dicio**: Voice processing foundation  
-- **Material Files**: File management engine
-- **Easer**: System automation framework
-- **Headwind MDM**: Device control APIs
+## 🤝 Contributing to Documentation
 
-## 🎯 Current Status (Main Branch)
+We welcome documentation improvements! If you find errors, unclear explanations, or missing information:
 
-**✅ Working Now:**
-- Voice-to-text with Vosk
-- Text-to-speech responses
-- File management through conversation
-- App launching via voice
-- System permissions integration
+1. Open an issue describing the problem
+2. Submit a pull request with your improvements
+3. Follow the same contribution guidelines as for code
 
-**Voice Commands:**
-```
-"List files in downloads"
-"Organize my pictures" 
-"Open calculator"
-"Launch Spotify"
-```
+### Documentation Standards
 
-## 🚀 Quick Start
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd cos-core
-
-# For traditional conversational OS
-git checkout master
-
-# For smartwatch-like interface
-git checkout smartwatch-interface
-
-# Build and run
-./gradlew assembleDebug
-```
-
-## 🌟 Branch Comparison
-
-| Feature | Main Branch | Smartwatch Branch |
-|---------|-------------|-------------------|
-| **Interface** | Traditional Android + Voice | Minimal conversation stream |
-| **App Integration** | Launch existing apps | Contextual widgets |
-| **Complexity** | Familiar for Android users | Revolutionary new paradigm |
-| **Development Stage** | Stable foundation | Experimental innovation |
-| **Use Case** | Gradual transition | Complete interface reimagining |
-
-## 🤝 Contributing
-
-Choose your branch based on your interest:
-- **Main Branch**: Enhance traditional conversational features
-- **Smartwatch Branch**: Push the boundaries of mobile interface design
-
-## 📄 License
-
-Apache License 2.0
-
-## 🌐 Community
-
-- **GitHub**: [conversational-os](https://github.com/conversational-os)
-- **Discord**: [Join our community](https://discord.gg/conversational-os)
-- **Twitter**: [@conversational_os](https://twitter.com/conversational_os)
+- Use clear, concise language
+- Include code examples where relevant
+- Keep formatting consistent
+- Update the index when adding new documents
+- Test all code samples before submitting
 
 ---
 
-**cOS - Two paths to conversational mobile computing** 🚀
+*Last updated: November 2024*
