@@ -4,7 +4,7 @@
 
 ## 🌟 Vision
 
-cOS replaces traditional touch interfaces with natural conversation, making smartphones truly accessible to everyone. Built on proven open-source components, it offers a privacy-first alternative to Big Tech assistants.
+cOS replaces traditional touch interfaces with natural conversation, making smartphones truly accessible to everyone. Built on proven open-source components, it offers a privacy-first alternative to Big Tech assistants. Features both voice and text-based chat interfaces for maximum accessibility.
 
 ## 🏗️ Repository Structure
 
@@ -37,6 +37,7 @@ cd cos/cos-core
 - [Contributing Guide](cos-docs/CONTRIBUTING.md)
 - [Development Roadmap](cos-docs/ROADMAP.md)
 - [Branch Strategy](cos-docs/BRANCH_STRATEGY.md)
+- [Chat Interface Design](cos-docs/CHAT_INTERFACE.md)
 
 ## 🤝 Contributing
 

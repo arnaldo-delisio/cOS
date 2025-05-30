@@ -9,11 +9,13 @@
 - [x] Permissions setup
 - [x] Git initialization
 
-### Week 2: Voice Processing
+### Week 2: Voice Processing & Chat Interface
 - [ ] Integrate Vosk for speech-to-text
 - [ ] Basic voice recognition functionality
 - [ ] Text-to-speech integration
 - [ ] Simple command parsing
+- [ ] Basic chat interface for text input
+- [ ] Unified conversation engine for voice/text
 
 ### Week 3: LLM Integration
 - [ ] OpenAI API integration
@@ -60,6 +62,13 @@
 - [ ] Wake word detection
 - [ ] System overlay
 - [ ] Power optimization
+
+### Accessibility Features
+- [ ] Enhanced chat interface
+- [ ] Screen reader support
+- [ ] High contrast themes
+- [ ] Keyboard navigation
+- [ ] Multi-modal input switching
 
 ## Phase 4: Community & Polish (Week 13-16)
 
