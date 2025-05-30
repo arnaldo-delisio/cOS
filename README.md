@@ -16,7 +16,7 @@ cOS is a revolutionary Android launcher that replaces app-hopping with natural c
 ### ✨ Key Features
 
 - **🎤 Conversation-First** - Natural language interface with zero learning curve
-- **🧠 AI-Powered Understanding** - Local LLM (Gemma 2B) processes requests intelligently  
+- **🧠 AI-Powered Understanding** - Local LLM (Gemma 3n) processes requests intelligently  
 - **📱 Deep Android Integration** - Actually controls apps, not just launches them
 - **🎯 Distraction Reduction** - Clean launcher inspired by olauncher's minimalism
 - **🔒 Complete Privacy** - All AI processing happens on-device
@@ -87,7 +87,7 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 ### Core Components
 
 - **Conversational Interface** - Single chat + essential shortcuts
-- **Local AI Engine** - Gemma 2B for on-device natural language processing
+- **Local AI Engine** - Gemma 3n via MediaPipe LLM Inference API for on-device processing
 - **Deep Android Integration** - Intelligent app control and content filtering
 - **Preference Learning Engine** - Silent learning of user habits and preferences
 - **Built-in Tool Suite** - Essential utilities to reduce app dependency
@@ -98,7 +98,7 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 ### Prerequisites
 
 - Android 7.0+ (API 24+)
-- 4GB+ RAM (for local AI)
+- 2GB+ RAM (for local AI with Gemma 3n)
 - Android Studio 2024.1+ (for development)
 
 ### Installation
@@ -141,7 +141,7 @@ cd cOS
 ### v0.1.0 - Foundation (Current)
 - ✅ Minimal launcher interface
 - ✅ Basic conversation engine
-- 🔄 Local AI (Gemma 2B) integration
+- 🔄 Local AI (Gemma 3n) integration
 - 🔄 Essential conversational controls
 
 ### v0.2.0 - Deep Integration
@@ -194,9 +194,11 @@ Licensed under the Apache License 2.0 - see [LICENSE](docs/LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-- [Gemma](https://ai.google.dev/gemma) - Local AI model for on-device processing
+- [Gemma 3n](https://ai.google.dev/gemma/docs/gemma-3n) - Mobile-optimized local AI model for on-device processing
+- [MediaPipe](https://github.com/google-ai-edge/mediapipe) - LLM Inference API for optimized on-device AI
 - [Vosk](https://alphacephei.com/vosk/) - Privacy-focused speech recognition
 - [olauncher](https://github.com/tanujnotes/Olauncher) - Inspiration for minimal design
+- [Lawnchair](https://github.com/LawnchairLauncher/lawnchair) - Modern launcher architecture reference
 - Android Open Source Project
 
 ---

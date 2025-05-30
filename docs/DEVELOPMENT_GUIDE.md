@@ -34,7 +34,7 @@ cos-core/app/src/main/java/os/conversational/cos/
    - Eliminate mode complexity
 
 2. **Local AI Integration**
-   - Gemma 2B for on-device understanding
+   - Gemma 3n for mobile-optimized on-device understanding
    - Natural language intent processing
    - Silent preference learning
    - Context-aware responses
@@ -82,6 +82,49 @@ cos-core/app/src/main/java/os/conversational/cos/
    - Conversation pattern library
    - Privacy-first documentation
    - Unified experience demos
+
+## 🚀 **MediaPipe LLM Integration Setup**
+
+### **Quick Start with MediaPipe**
+```bash
+# Clone MediaPipe samples
+git clone https://github.com/google-ai-edge/mediapipe-samples.git
+cd mediapipe-samples/examples/llm_inference/android
+
+# Study the implementation for reference
+```
+
+### **Model Deployment**
+```bash
+# Download Gemma 3n model (example)
+wget https://huggingface.co/google/gemma-3n-E2B-it-litert-preview/resolve/main/gemma-3n.bin
+
+# Push to device for testing
+adb shell mkdir -p /data/local/tmp/llm/
+adb push gemma-3n.bin /data/local/tmp/llm/
+```
+
+### **Key Implementation Changes**
+```kotlin
+// Replace in LocalAIEngine.kt
+import com.google.mediapipe.tasks.genai.llminference.LlmInference
+
+class LocalAIEngine(private val context: Context) {
+    private lateinit var llmInference: LlmInference
+    
+    suspend fun initialize(): Boolean {
+        val options = LlmInference.LlmInferenceOptions.builder()
+            .setModelPath("/data/local/tmp/llm/gemma-3n.bin")
+            .setMaxTokens(1024)
+            .setTopK(40)
+            .setTemperature(0.8f)
+            .build()
+            
+        llmInference = LlmInference.createFromOptions(context, options)
+        return true
+    }
+}
+```
 
 ## 💻 **Implementation Guidelines**
 
@@ -207,13 +250,21 @@ class IntelligentActionRouter {
 - ✅ **Android Foundation**: Kotlin/Compose app with voice recognition (Vosk)
 - ✅ **Basic Skills**: File management and app control through simple pattern matching
 - ✅ **Voice Interface**: Working speech-to-text and text-to-speech
-- ❌ **AI Integration**: No Gemma 2B or intelligent conversation understanding
+- ❌ **AI Integration**: No Gemma 3n or intelligent conversation understanding
 - ❌ **Deep Android Control**: Limited to basic app launching
 - ❌ **Unified Interface**: Current UI is basic development interface
 
 ### **Development Priorities**
-1. **Immediate**: Set up development environment with AI dependencies (TensorFlow Lite)
-2. **Next 2 Weeks**: Integrate Gemma 2B for local AI conversation understanding
+1. **Immediate**: Set up MediaPipe LLM Inference API environment
+   - Add `implementation 'com.google.mediapipe:tasks-genai:0.10.22'` to build.gradle
+   - Clone `google-ai-edge/mediapipe-samples` for reference
+   - Download Gemma 3n model from HuggingFace
+   
+2. **Next 2 Weeks**: Integrate Gemma 3n using MediaPipe
+   - Replace LocalAIEngine with MediaPipe LlmInference implementation
+   - Test on physical devices (emulators not fully supported)
+   - Optimize GPU acceleration and quantization
+   
 3. **Next Month**: Implement deep Android integration for smart app control
 4. **Next 2 Months**: Build unified conversational launcher interface
 

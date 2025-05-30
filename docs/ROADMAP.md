@@ -5,12 +5,12 @@
 ### **Current Status**
 - ✅ Basic Android app with voice recognition working
 - ✅ Simple skill-based conversation system
-- ❌ No AI integration (major gap)
+- ❌ No Gemma 3n integration (major gap)
 - ❌ No unified launcher interface
 
 ### **Immediate Priorities (Next 2 Weeks)**
 - [ ] Set up development environment with AI dependencies
-- [ ] Research and prototype Gemma 2B integration
+- [ ] Research and prototype Gemma 3n integration with LiteRT
 - [ ] Refactor conversation engine for AI compatibility
 - [ ] Test AI inference performance on Android devices
 
@@ -28,20 +28,20 @@
 
 ## 📅 Version History & Planning
 
-### v0.1.0 - AI Integration Foundation (Target: July 2025)
-**Goal**: Working local AI conversation understanding
+### v0.1.0 - AI Integration Foundation (Target: June 2025)
+**Goal**: Working Gemma 3n mobile-optimized conversation understanding
 
 - ✅ Basic conversation engine
 - ✅ Voice input via Vosk
 - ✅ Text-to-speech responses
 - ✅ File management through conversation
 - ✅ App control through conversation
-- 🔄 Local AI (Gemma 2B) integration
-- 🔄 Intelligent conversation understanding
-- 📋 AI performance optimization
-- 📋 Enhanced conversation context
+- 🔄 Local AI (Gemma 3n) integration with LiteRT
+- 🔄 Intelligent conversation understanding (<300ms response)
+- 📋 AI performance optimization with int4 quantization
+- 📋 Enhanced conversation context with multimodal support
 
-### v0.2.0 - Deep Integration (Target: September 2025)
+### v0.2.0 - Deep Integration (Target: August 2025)
 **Goal**: Intelligent app control and content filtering
 
 - 📋 Deep photo/gallery filtering (by person, date, context)
@@ -53,7 +53,7 @@
 - 📋 Cross-conversation context preservation
 - 📋 Intelligent contact and calendar integration
 
-### v0.3.0 - Built-in Tools & Intelligence (Target: November 2025)
+### v0.3.0 - Built-in Tools & Intelligence (Target: October 2025)
 **Goal**: Proactive AI and cross-app workflows
 
 - 📋 Cross-app intelligent workflows
@@ -86,7 +86,7 @@
 - 📋 Advanced gesture and voice shortcuts
 - 📋 Comprehensive error handling and recovery
 
-### v1.0.0 - Public Release (Target: January 2026)
+### v1.0.0 - Public Release (Target: December 2025)
 **Goal**: Production-ready unified conversational experience
 
 - 📋 Complete intelligent conversation library
@@ -137,10 +137,10 @@
 
 ### Technical Excellence
 - AI understanding accuracy >95%
-- Response time <500ms for intent processing
+- Response time <300ms for intent processing (Gemma 3n optimization)
 - Crash rate <0.1%
-- Battery impact <5%
-- Memory usage optimized for 4GB+ devices
+- Battery impact <3% (Gemma 3n efficiency)
+- Memory usage optimized for 2GB+ devices (Gemma 3n mobile-first design)
 
 ### User Adoption
 - 1,000+ beta testers for unified experience
@@ -169,3 +169,19 @@ See our [Contributing Guide](CONTRIBUTING.md) for ways to help:
 ---
 
 *This roadmap is a living document and will be updated based on community feedback and development progress.*
+
+## 🔧 Development Accelerators
+
+### MediaPipe Integration
+Using Google's MediaPipe LLM Inference API significantly accelerates development:
+- **Pre-built GPU optimization** - No need to implement from scratch
+- **Model deployment tools** - Simplified Gemma 3n integration
+- **Performance monitoring** - Built-in profiling capabilities
+
+### Open Source Launcher References
+Learning from successful launcher projects:
+- **[Lawnchair](https://github.com/LawnchairLauncher/lawnchair)** - Modern Pixel Launcher base
+- **[Kvaesitso](https://github.com/MM2-0/Kvaesitso)** - Search-focused launcher design
+- **[Neo Launcher](https://github.com/NeoApplications/Neo-Launcher)** - Customization architecture
+
+These resources reduce development time while maintaining cOS's unique conversational approach.

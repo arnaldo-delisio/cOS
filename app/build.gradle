@@ -52,7 +52,8 @@ dependencies {
     // Voice processing
     implementation 'com.alphacep:vosk-android:0.3.47'
     
-    // Local AI/ML processing
+    // Local AI/ML processing with MediaPipe
+    implementation 'com.google.mediapipe:tasks-genai:0.10.22'
     implementation 'org.tensorflow:tensorflow-lite:2.16.1'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.16.1'
     implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'

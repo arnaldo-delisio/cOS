@@ -23,7 +23,7 @@ cOS is architected as one unified Android application with integrated components
                            │
 ┌──────────────────────────────────────────────────────────┐
 │                 Local AI Understanding                     │
-│         Gemma 2B + Conversation Context + Learning        │
+│         Gemma 3n + Conversation Context + Learning        │
 └──────────────────────────────────────────────────────────┘
                            │
 ┌──────────────────────────────────────────────────────────┐
@@ -75,11 +75,20 @@ class UnifiedLauncherActivity : Activity() {
 
 ### 2. Local AI Understanding Engine
 
-On-device AI processing using Gemma 2B for complete privacy and intelligent conversation understanding.
+On-device AI processing using Gemma 3n via MediaPipe LLM Inference API for complete privacy and intelligent conversation understanding.
 
 ```kotlin
 class LocalAIEngine {
-    private val gemmaModel = GemmaModel("gemma-2b-it")
+    private val llmInference = LlmInference.createFromOptions(
+        context,
+        LlmInference.LlmInferenceOptions.builder()
+            .setModelPath("/data/local/tmp/llm/gemma-3n.bin")
+            .setMaxTokens(1024)
+            .setTopK(40)
+            .setTemperature(0.8f)
+            .setRandomSeed(101)
+            .build()
+    )
     private val contextManager = UnifiedContextManager()
     private val preferenceLearner = SilentLearningEngine()
     
@@ -300,8 +309,8 @@ For constructing complex AI prompts with context, preferences, and capabilities.
 ### On-Device Processing
 ```kotlin
 class PrivacyManager {
-    // All AI processing happens locally
-    private val localLLM = GemmaModel(modelPath = "/data/data/app/models/")
+    // All AI processing happens locally via MediaPipe
+    private val localLLM = MediaPipeLLM(modelPath = "/data/local/tmp/llm/")
     
     // No network requests for core functionality
     fun processUserInput(input: String): Response {
@@ -329,8 +338,10 @@ class PrivacyManager {
 ### Memory Management
 ```kotlin
 class PerformanceManager {
-    // Lazy loading of AI model
-    private val aiModel by lazy { loadGemmaModel() }
+    // Lazy loading of AI model with MediaPipe/LiteRT optimization
+    private val aiModel by lazy { 
+        MediaPipeLLMLoader.loadGemma3nModel() 
+    }
     
     // Efficient conversation history
     private val conversationBuffer = CircularBuffer<Message>(maxSize = 100)
@@ -345,13 +356,14 @@ class PerformanceManager {
 ```
 
 ### Response Times
-- **Target**: <500ms for intent processing
-- **Target**: <1s for action execution
-- **Strategy**: Pre-load model, cache common intents, optimize Android integration
+- **Target**: <300ms for intent processing (1.5x faster with Gemma 3n)
+- **Target**: <500ms for action execution
+- **Strategy**: LiteRT optimization, int4 quantization, GPU delegate support
 
 ### Battery Optimization
 - **Selective wake**: Only process when launcher is active
-- **Efficient model**: Gemma 2B optimized for mobile
+- **Efficient model**: Gemma 3n with <2GB memory footprint
+- **Advanced quantization**: Int4 quantization for 2.5-4x size reduction
 - **Smart background**: Minimal processing when not in use
 
 ## Extension Points
@@ -372,9 +384,9 @@ class ToolRegistry {
 
 ### 2. AI Model Swapping
 Support for different local models based on device capabilities:
-- Gemma 2B (default)
-- Phi-3 Mini (lower resource)
-- Gemma 7B (high-end devices)
+- Gemma 3n (default - mobile-optimized)
+- Gemma 3 1B (lower resource devices)
+- Gemma 3 4B (high-end devices with >4GB RAM)
 
 ### 3. Platform Extensions
 - **Tasker Integration** - Export learned automations
@@ -425,3 +437,20 @@ The architecture is designed to scale from basic conversation to advanced AI ass
 - Any future extensions will enhance, not fragment, the main experience
 
 This architecture prioritizes simplicity, privacy, and user experience while enabling focused community development around a shared vision.
+
+## Development Accelerators
+
+### MediaPipe LLM Inference Integration
+cOS leverages Google's MediaPipe LLM Inference API for optimal Gemma 3n integration:
+- **Pre-built GPU acceleration** for mobile devices
+- **Optimized model loading and caching**
+- **Built-in quantization support** (INT4, FP16)
+- **LoRA fine-tuning capabilities** for customization
+
+### Reference Implementations
+Learning from successful open-source launcher projects:
+- **Lawnchair** - Modern launcher architecture patterns
+- **Kvaesitso** - Search-focused interface design
+- **Neo Launcher** - Customization and theming approaches
+
+These accelerators reduce development time while maintaining cOS's unique conversational-first approach.

@@ -36,7 +36,7 @@ Welcome to cOS! We're building a **conversational launcher** that reduces phone 
 4. Submit a pull request with clear description of improvements
 
 ## 📋 Current Priorities
-- **AI Integration**: Replace pattern matching with Gemma 2B local inference
+- **AI Integration**: Replace pattern matching with Gemma 3n local inference
 - **Deep Android Integration**: Accessibility service for smart app control
 - **Launcher Interface**: Transform app into distraction-free launcher
 - **Built-in Tool Suite**: PDF viewer, calculator, notes within the main app
