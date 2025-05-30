@@ -68,7 +68,7 @@ You: "Find pizza places nearby"
 
 ## 🏗️ Architecture
 
-cOS is built as a **single unified Android application** that serves as both launcher and intelligent assistant. This approach prioritizes simplicity, community focus, and user experience consistency.
+cOS is built as a **single Android application** that serves as both launcher and intelligent assistant. This approach prioritizes simplicity, community focus, and user experience consistency.
 
 ```
 Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feedback
@@ -76,17 +76,17 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 
 ### Core Principles
 
-1. **Unified Single App** - Everything in one cohesive experience, no fragmentation
+1. **Single App Experience** - Everything in one cohesive experience, no fragmentation
 2. **Conversation-First** - Everything happens through natural language
 3. **Distraction Reduction** - Inspired by olauncher's minimalism  
 4. **Deep Integration** - Don't just launch apps, actually control them
 5. **Silent Learning** - AI learns user preferences without asking
 6. **Built-in Essentials** - Include basic tools to reduce app dependency
-7. **Community-Focused** - All contributors work on the same unified vision
+7. **Community-Focused** - All contributors work on the same shared vision
 
-### Single App Components
+### Core Components
 
-- **Unified Conversational Interface** - Single chat + essential shortcuts
+- **Conversational Interface** - Single chat + essential shortcuts
 - **Local AI Engine** - Gemma 2B for on-device natural language processing
 - **Deep Android Integration** - Intelligent app control and content filtering
 - **Preference Learning Engine** - Silent learning of user habits and preferences
@@ -108,7 +108,7 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 git clone https://github.com/arnaldo-delisio/cOS.git
 cd cOS
 
-# Build and install the unified app
+# Build and install the app
 ./gradlew installDebug
 ```
 
@@ -129,7 +129,7 @@ cd cOS
 ### vs Voice Assistants  
 - **Complete privacy** - all processing happens on-device
 - **Deep integration** - actually controls apps, not just launches them
-- **Launcher replacement** - unified experience, not an overlay
+- **Launcher replacement** - seamless experience, not an overlay
 
 ### vs Multi-Mode Systems
 - **Single experience** - no mode complexity or user confusion
@@ -164,21 +164,21 @@ cd cOS
 
 ## 🤝 Contributing
 
-We welcome contributions to make phones more conversational and less distracting! cOS is built as a **single unified application** where all community efforts focus on improving the core experience.
+We welcome contributions to make phones more conversational and less distracting! cOS is built as a **single application** where all community efforts focus on improving the core experience.
 
 **Community-Focused Development:**
-- 🎯 **Unified Vision** - All contributors work on the same cohesive experience
+- 🎯 **Shared Vision** - All contributors work on the same cohesive experience
 - 🧠 **AI Integration** - Help implement and optimize local AI conversation understanding
 - 📱 **Deep Android Control** - Build intelligent app integration and content filtering
-- 🎨 **Unified Interface** - Improve the distraction-free conversational launcher
+- 🎨 **Conversational Interface** - Improve the distraction-free launcher experience
 - 🛠️ **Built-in Tools** - Add essential functionality to reduce app dependency
 
 **Ways to Contribute:**
-- 🧪 Test the unified conversation experience on different devices
+- 🧪 Test the conversation experience on different devices
 - 💡 Suggest new intelligent conversation patterns and AI improvements
 - 🐛 Report bugs or unexpected AI behavior
 - 📝 Improve documentation and user guides
-- 🔧 Submit code improvements for the unified app
+- 🔧 Submit code improvements for the app
 
 See our [Contributing Guide](docs/CONTRIBUTING.md) for details.
 

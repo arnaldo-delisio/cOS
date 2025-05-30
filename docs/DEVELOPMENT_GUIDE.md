@@ -1,8 +1,8 @@
-# cOS Development Guide - Unified Conversational Experience
+# cOS Development Guide - Conversational Experience
 
 ## 🎯 **Project Overview**
 
-You are developing **cOS (Conversational Operating System)** - a unified, open-source Android launcher that transforms smartphones into distraction-free conversational interfaces. cOS eliminates the complexity of multiple modes and provides a single, natural conversation experience powered by local AI.
+You are developing **cOS (Conversational Operating System)** - an open-source Android launcher that transforms smartphones into distraction-free conversational interfaces. cOS eliminates the complexity of multiple modes and provides a single, natural conversation experience powered by local AI.
 
 ## 🏗️ **Architecture Overview**
 
