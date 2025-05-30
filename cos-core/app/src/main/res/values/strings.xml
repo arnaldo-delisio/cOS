@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">cOS</string>
+    <string name="start_listening">Start Listening</string>
+    <string name="stop_listening">Stop Listening</string>
+    <string name="early_development">🚧 Early Development Phase</string>
+    <string name="conversational_os">Conversational Operating System</string>
+</resources>
