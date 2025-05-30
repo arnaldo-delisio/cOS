@@ -1,7 +1,23 @@
 #!/bin/bash
 # Script to download and deploy Gemma 3n model for cOS
+#
+# ⚠️ DEPRECATED: This script is no longer needed!
+# The cOS app now downloads the AI model automatically on first launch.
+# Simply install and run the app - it will prompt you to download the model.
+#
+# This script is kept for reference/debugging purposes only.
 
 echo "=== cOS Gemma 3n Model Deployment Script ==="
+echo "⚠️  WARNING: This script is DEPRECATED!"
+echo "The app now downloads the model automatically on first launch."
+echo
+read -p "Do you still want to continue? (y/N) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo "Good choice! Just install and run the app instead."
+    exit 0
+fi
 echo
 
 # Check if device is connected

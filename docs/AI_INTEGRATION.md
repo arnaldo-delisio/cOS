@@ -24,26 +24,48 @@ The `LocalAIEngine` has been completely rewritten to use MediaPipe's LLM Inferen
 
 ## Setup Instructions
 
-### 1. Model Deployment
-
-```bash
-# Run the deployment script
-./scripts/deploy_model.sh
-```
-
-This script will:
-- Download the Gemma 3n model from HuggingFace
-- Push it to your Android device at `/data/local/tmp/llm/`
-- Verify the deployment
-
-### 2. Build and Install
+### 1. Build and Install
 
 ```bash
 # Build and install the app
 ./gradlew installDebug
 ```
 
-### 3. Testing
+### 2. Automatic Model Download
+
+On first launch, cOS will:
+- Detect that the AI model is missing
+- Show a user-friendly download dialog
+- Download the Gemma 3n model (≈1.2GB) from HuggingFace
+- Display real-time progress
+- Store the model in app's private storage
+- Automatically initialize AI features when complete
+
+**No manual deployment needed!** The app handles everything internally.
+
+### 3. Model Management
+
+The new `ModelManager` class handles all model operations:
+
+```kotlin
+// Check if model exists
+val isAvailable = modelManager.isModelAvailable()
+
+// Download with progress tracking
+modelManager.downloadModel().collect { progress ->
+    when (progress.status) {
+        DOWNLOADING -> updateProgress(progress.progress)
+        COMPLETED -> initializeAI()
+        ERROR -> showRetryDialog()
+    }
+}
+
+// Get model location (internal storage)
+val modelPath = modelManager.getModelPath()
+// Returns: /data/data/os.conversational.cos/files/models/gemma-3n.bin
+```
+
+### 4. Testing
 
 Test the AI with various conversational inputs:
 - "Show photos of Sarah from vacation"
@@ -61,6 +83,18 @@ Voice/Text              "INTENT: SHOW_FILTERED_PHOTOS"   ConversationEngine
                         "DATA: person:Sarah,..."
 ```
 
+### Model Storage Architecture
+
+```
+App Launch → Check Model → Missing? → Show Download Dialog
+     ↓           ↓           ↓              ↓
+  Continue    Found at    Download    Progress UI
+             app storage   1.2GB      Real-time %
+                 ↓           ↓              ↓
+            Initialize   Store in      Complete
+               AI       app/files/    Initialize
+```
+
 ## Performance Optimization
 
 1. **Model**: Gemma 3n is 1.5x faster than Gemma 2B
@@ -72,9 +106,9 @@ Voice/Text              "INTENT: SHOW_FILTERED_PHOTOS"   ConversationEngine
 
 ### Model Not Found
 ```
-Error: Model file not found at /data/local/tmp/llm/gemma-3n.bin
+Error: Model file not found. Please download the AI model through the app.
 ```
-Solution: Run `./scripts/deploy_model.sh` to download and deploy the model
+Solution: The app will automatically show a download dialog. Simply tap "Download" to get the model.
 
 ### Slow Inference
 - Ensure testing on physical device (not emulator)

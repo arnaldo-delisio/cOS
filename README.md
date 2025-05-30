@@ -98,6 +98,7 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 ### Prerequisites
 
 - Android 7.0+ (API 24+)
+- 3GB+ storage space (for AI model)
 - 2GB+ RAM (for local AI with Gemma 3n)
 - Android Studio 2024.1+ (for development)
 
@@ -114,10 +115,15 @@ cd cOS
 
 ### First Run
 
-1. Set cOS as your default launcher
-2. Grant necessary permissions (microphone, accessibility, storage)
-3. Start with simple requests: "Open camera" or "What's the weather?"
-4. The AI learns your preferences automatically
+1. Launch cOS for the first time
+2. **AI Model Download**: You'll be prompted to download the Gemma 3n model (≈1.2GB)
+   - This is a one-time download that enables all AI features
+   - Progress is shown in real-time
+   - Model is stored securely in app storage
+3. Grant necessary permissions (microphone, storage)
+4. Set cOS as your default launcher (optional)
+5. Start with simple requests: "Open camera" or "Calculate 25 plus 30"
+6. The AI learns your preferences automatically
 
 ## 🎯 What Makes cOS Different
 

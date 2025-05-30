@@ -87,23 +87,25 @@ cos-core/app/src/main/java/os/conversational/cos/
 
 ### **Quick Start with MediaPipe**
 ```bash
-# Deploy Gemma 3n model to your device
-./scripts/deploy_model.sh
-
 # Build and install cOS
 ./gradlew installDebug
+
+# The app will prompt to download the AI model on first launch
+# No external deployment needed!
 
 # Monitor AI initialization
 adb logcat | grep LocalAIEngine
 ```
 
 ### **Implementation Status** ✅
-The MediaPipe LLM Inference integration is now complete! LocalAIEngine.kt has been updated with:
+The MediaPipe LLM Inference integration is now complete with automatic model management!
 
 1. **Full MediaPipe Integration**: Uses `LlmInference` for Gemma 3n inference
-2. **Structured Prompts**: Guides AI to provide intent classification and natural responses
-3. **Response Parsing**: Extracts intent, confidence, and action data from AI output
-4. **Fallback Logic**: Pattern matching when AI parsing fails
+2. **Internal Model Download**: ModelManager handles downloading and storage
+3. **User-Friendly Setup**: Model download dialog on first launch
+4. **Structured Prompts**: Guides AI to provide intent classification and natural responses
+5. **Response Parsing**: Extracts intent, confidence, and action data from AI output
+6. **Fallback Logic**: Pattern matching when AI parsing fails
 
 ### **Key Implementation**
 ```kotlin
@@ -113,9 +115,16 @@ import com.google.mediapipe.tasks.genai.llminference.LlmInference
 class LocalAIEngine(private val context: Context) {
     private var llmInference: LlmInference? = null
     
+    private val modelManager = ModelManager(context)
+    
     suspend fun initialize(): Boolean {
+        // Check if model is available
+        if (!modelManager.isModelAvailable()) {
+            return false // App will show download dialog
+        }
+        
         val options = LlmInference.LlmInferenceOptions.builder()
-            .setModelPath("/data/local/tmp/llm/gemma-3n.bin")
+            .setModelPath(modelManager.getModelPath())
             .setMaxTokens(1024)
             .setTopK(40)
             .setTemperature(0.8f)
@@ -133,6 +142,34 @@ class LocalAIEngine(private val context: Context) {
     }
 }
 ```
+
+### **Model Management System**
+
+The app now includes a complete model management system:
+
+```kotlin
+// ModelManager.kt handles all model operations
+class ModelManager(context: Context) {
+    fun getModelPath(): String // Returns app's internal storage path
+    suspend fun isModelAvailable(): Boolean // Checks if model exists
+    fun downloadModel(): Flow<DownloadProgress> // Downloads with progress
+    suspend fun getModelSizeMB(): Float // Get model size
+    suspend fun deleteModel(): Boolean // Remove model to free space
+}
+```
+
+**User Experience:**
+1. First launch detects missing model
+2. Shows download dialog with size info (≈1.2GB)
+3. Real-time progress during download
+4. Model stored in `context.filesDir/models/`
+5. Automatic retry on failure
+
+**For Developers:**
+- No manual model deployment needed
+- Model persists across app updates
+- Can programmatically check/manage model
+- Download happens over any network connection
 
 ### **Testing the AI**
 ```kotlin
