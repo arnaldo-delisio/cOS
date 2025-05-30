@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import os.conversational.cos.core.ConversationEngine
 import os.conversational.cos.skills.AppControlSkill
 import os.conversational.cos.skills.FileManagementSkill
+import os.conversational.cos.skills.CalculatorSkill
 import os.conversational.cos.ui.theme.COSTheme
 import os.conversational.cos.voice.VoiceEngine
 
@@ -59,11 +60,12 @@ class MainActivity : ComponentActivity() {
     
     private fun setupEngines() {
         voiceEngine = VoiceEngine(this)
-        conversationEngine = ConversationEngine()
+        conversationEngine = ConversationEngine(this)
         
         // Register skills
         conversationEngine.registerSkill("file", FileManagementSkill(this))
         conversationEngine.registerSkill("app", AppControlSkill(this))
+        conversationEngine.registerSkill("calculator", CalculatorSkill(this))
     }
     
     private fun requestPermissions() {
@@ -84,9 +86,15 @@ class MainActivity : ComponentActivity() {
     
     private fun initializeVoiceEngine() {
         lifecycleScope.launch {
-            val initialized = voiceEngine.initialize()
-            if (initialized) {
+            // Initialize both voice and conversation engines
+            val voiceInitialized = voiceEngine.initialize()
+            val conversationInitialized = conversationEngine.initialize()
+            
+            if (voiceInitialized && conversationInitialized) {
                 setupVoiceListener()
+            } else {
+                // Handle initialization failure
+                voiceEngine.speak("Failed to initialize AI conversation system")
             }
         }
     }
@@ -211,7 +219,7 @@ class MainActivity : ComponentActivity() {
             Spacer(modifier = Modifier.height(48.dp))
             
             Text(
-                text = "Try saying:\n• \"List files in downloads\"\n• \"Open calculator\"\n• \"Organize my pictures\"",
+                text = "Try saying:\n• \"Show photos of Sarah from vacation\"\n• \"Calculate 15% tip on \$50\"\n• \"List files in downloads\"\n• \"Text mom I'm running late\"",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center
@@ -220,7 +228,7 @@ class MainActivity : ComponentActivity() {
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
-                text = "🚧 Early Development Phase",
+                text = "🤖 AI-Powered Conversation (Beta)",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )

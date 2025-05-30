@@ -52,7 +52,16 @@ dependencies {
     // Voice processing
     implementation 'com.alphacep:vosk-android:0.3.47'
     
-    // LLM integration (placeholder for now)
+    // Local AI/ML processing
+    implementation 'org.tensorflow:tensorflow-lite:2.16.1'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.16.1'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
+    
+    // Enhanced data handling for AI
+    implementation 'androidx.datastore:datastore-preferences:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+    
+    // Network (for model downloads if needed)
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

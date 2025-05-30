@@ -1,26 +1,75 @@
 package os.conversational.cos.core
 
+import android.content.Context
+import os.conversational.cos.ai.*
+
 /**
  * Core conversation engine for cOS
- * Handles voice input, intent classification, and skill routing
+ * Handles voice input, AI-powered intent classification, and skill routing
  */
-class ConversationEngine {
+class ConversationEngine(private val context: Context) {
     
     private val skills = mutableMapOf<String, ConversationalSkill>()
-    private var conversationContext = ConversationContext()
+    private var conversationContext = os.conversational.cos.ai.ConversationContext()
+    private lateinit var aiEngine: LocalAIEngine
     
     /**
-     * Process user input and return appropriate response
+     * Initialize the conversation engine with AI
+     */
+    suspend fun initialize(): Boolean {
+        aiEngine = LocalAIEngine(context)
+        return aiEngine.initialize()
+    }
+    
+    /**
+     * Process user input using AI and return appropriate response
      */
     suspend fun processInput(input: String): ConversationResponse {
-        // TODO: Implement LLM integration for intent classification
-        val intent = classifyIntent(input)
-        val skill = findSkillForIntent(intent)
+        if (!::aiEngine.isInitialized) {
+            return ConversationResponse.error("AI engine not initialized")
+        }
         
-        return if (skill != null) {
-            skill.processConversation(input, conversationContext)
-        } else {
-            ConversationResponse.error("I don't understand that command yet.")
+        // Use AI to understand the conversation
+        val aiResponse = aiEngine.processConversation(
+            ConversationInput(input, conversationContext)
+        )
+        
+        return when (aiResponse) {
+            is AIResponse.Success -> {
+                // Route to appropriate skill based on AI understanding
+                val skill = findSkillForIntent(mapToLegacyIntent(aiResponse.intent))
+                
+                if (skill != null) {
+                    // Convert AI context to legacy context for skills
+                    val legacyContext = os.conversational.cos.core.ConversationContext()
+                    skill.processConversation(input, legacyContext)
+                } else {
+                    // Handle built-in AI responses
+                    ConversationResponse.success(
+                        message = aiResponse.response,
+                        data = aiResponse.actionData
+                    )
+                }
+            }
+            is AIResponse.Error -> {
+                ConversationResponse.error(aiResponse.message)
+            }
+        }
+    }
+    
+    /**
+     * Map new AI intents to legacy skill intents
+     */
+    private fun mapToLegacyIntent(aiIntent: ConversationIntent): Intent {
+        return when (aiIntent) {
+            ConversationIntent.LIST_FILES,
+            ConversationIntent.ORGANIZE_FILES,
+            ConversationIntent.DELETE_FILES -> Intent.FILE_MANAGEMENT
+            
+            ConversationIntent.LAUNCH_APP,
+            ConversationIntent.LIST_APPS -> Intent.APP_CONTROL
+            
+            else -> Intent.UNKNOWN
         }
     }
     
