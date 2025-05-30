@@ -13,9 +13,9 @@ Welcome to cOS! We're building a **single unified conversational launcher** that
 ### Development Setup
 1. Fork the repository
 2. Clone your fork: `git clone https://github.com/your-username/cOS.git`
-3. Navigate to the main app: `cd cOS/cos-core`
-4. Open in Android Studio
-5. Build and run the unified app: `./gradlew assembleDebug`
+3. Navigate to the project: `cd cOS`
+4. Open in Android Studio (open the root directory)
+5. Build and run the unified app: `./gradlew installDebug`
 
 ## 🤝 How to Contribute
 
@@ -31,7 +31,7 @@ Welcome to cOS! We're building a **single unified conversational launcher** that
 
 ### Development Process
 1. Create a feature branch (`git checkout -b feature/unified-improvement`)
-2. Make your changes to the unified app in `cos-core/`
+2. Make your changes to the unified app in `app/`
 3. Test thoroughly on multiple devices
 4. Submit a pull request with clear description of improvements
 

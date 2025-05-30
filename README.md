@@ -106,7 +106,7 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 ```bash
 # Clone the repository
 git clone https://github.com/arnaldo-delisio/cOS.git
-cd cOS/cos-core
+cd cOS
 
 # Build and install the unified app
 ./gradlew installDebug
