@@ -8,6 +8,12 @@ Welcome to the cOS documentation! This directory contains all the technical docu
 - **[Architecture](ARCHITECTURE.md)** - System design and technical architecture
 - **[Development Guide](DEVELOPMENT_GUIDE.md)** - Setup instructions and development workflow
 - **[Roadmap](ROADMAP.md)** - Development timeline and feature planning
+- **[Vision Evolution](VISION_EVOLUTION.md)** - How our vision evolved from multi-mode to unified
+
+### Project Status & Planning
+- **[Current Status](CURRENT_STATUS.md)** - Current project health and development status
+- **[Project Audit 2024](PROJECT_AUDIT_2024.md)** - Comprehensive technical audit and analysis
+- **[Development Plan](DEVELOPMENT_PLAN.md)** - Detailed implementation plan for unified vision
 
 ### Contributing
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to cOS
