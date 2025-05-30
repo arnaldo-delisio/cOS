@@ -8,7 +8,6 @@ Welcome to the cOS documentation! This directory contains all the technical docu
 - **[Architecture](ARCHITECTURE.md)** - System design and technical architecture
 - **[Development Guide](DEVELOPMENT_GUIDE.md)** - Setup instructions and development workflow
 - **[Roadmap](ROADMAP.md)** - Development timeline and feature planning
-- **[Vision Evolution](VISION_EVOLUTION.md)** - How our vision evolved from multi-mode to unified
 
 
 ### Contributing
@@ -20,9 +19,9 @@ Welcome to the cOS documentation! This directory contains all the technical docu
 
 ## 🚀 Quick Links
 
-- **Main Repository**: [github.com/arnaldo-delisio/cos](https://github.com/arnaldo-delisio/cos)
-- **Issues**: [Report bugs or request features](https://github.com/arnaldo-delisio/cos/issues)
-- **Discussions**: [Community forum](https://github.com/arnaldo-delisio/cos/discussions)
+- **Main Repository**: [github.com/arnaldo-delisio/cOS](https://github.com/arnaldo-delisio/cOS)
+- **Issues**: [Report bugs or request features](https://github.com/arnaldo-delisio/cOS/issues)
+- **Discussions**: [Community forum](https://github.com/arnaldo-delisio/cOS/discussions)
 
 ## 📖 Getting Started
 
@@ -52,4 +51,4 @@ We welcome documentation improvements! If you find errors, unclear explanations,
 
 ---
 
-*Last updated: November 2024*
+*Last updated: May 2025*

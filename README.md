@@ -187,7 +187,6 @@ See our [Contributing Guide](docs/CONTRIBUTING.md) for details.
 - **[Architecture](docs/ARCHITECTURE.md)** - Technical design and components
 - **[Development Guide](docs/DEVELOPMENT_GUIDE.md)** - Setup and development workflow  
 - **[Roadmap](docs/ROADMAP.md)** - Feature timeline and planning
-- **[Vision Evolution](docs/VISION_EVOLUTION.md)** - How our vision evolved
 
 ## 📄 License
 
