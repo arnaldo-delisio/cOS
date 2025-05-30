@@ -1,10 +1,15 @@
-# cOS - Conversational Operating System
+# cOS - Adaptive Conversational Operating System
 
-> **Transform any Android device into a voice-first, privacy-respecting, fully conversational smartphone experience.**
+> **Transform any Android device into an adaptive, voice-first, privacy-respecting conversational experience that works the way YOU want.**
 
 ## 🌟 Vision
 
-cOS replaces traditional touch interfaces with natural conversation, making smartphones truly accessible to everyone. Built on proven open-source components, it offers a privacy-first alternative to Big Tech assistants. Features both voice and text-based chat interfaces for maximum accessibility.
+cOS is the world's first Adaptive Conversational OS that gives users the power to choose their interaction paradigm:
+- **Classic Mode**: Traditional Android enhanced with voice commands
+- **Widget Mode**: Revolutionary contextual interface with embedded widgets
+- **Hybrid Mode**: Intelligent switching based on context
+
+Built on proven open-source components, it offers a privacy-first alternative to Big Tech assistants with both voice and text-based interfaces for maximum accessibility.
 
 ## 🏗️ Repository Structure
 
@@ -34,10 +39,11 @@ cd cos/cos-core
 ## 📖 Documentation
 
 - [Project Documentation](cos-docs/)
+- [Unified Vision](cos-docs/UNIFIED_VISION.md)
 - [Contributing Guide](cos-docs/CONTRIBUTING.md)
 - [Development Roadmap](cos-docs/ROADMAP.md)
-- [Branch Strategy](cos-docs/BRANCH_STRATEGY.md)
 - [Chat Interface Design](cos-docs/CHAT_INTERFACE.md)
+- [Branch Merge Plan](cos-docs/BRANCH_MERGE_PLAN.md)
 
 ## 🤝 Contributing
 
