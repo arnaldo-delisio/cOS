@@ -1,12 +1,14 @@
-# cOS Architecture - Unified Conversational Interface
+# cOS Architecture - Single Unified Application
 
 ## Overview
 
-cOS employs a unified architecture designed around natural language understanding and deep Android integration. The system eliminates interface complexity by providing a single conversational layer that intelligently handles all user interactions, reducing distraction while maximizing productivity.
+cOS is built as a **single unified Android application** that serves as both conversational launcher and intelligent assistant. This architectural approach eliminates complexity by providing one cohesive experience that intelligently handles all user interactions, reducing distraction while maximizing productivity.
 
-## Unified System Architecture
+**Design Philosophy**: One app, one experience, one codebase - all community efforts focused on perfecting the unified vision.
 
-The new cOS architecture eliminates the complexity of multiple modes and focuses on a single, natural conversation flow:
+## Single App Architecture
+
+cOS is architected as one unified Android application with integrated components working together seamlessly:
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -408,4 +410,18 @@ The architecture is designed to scale from basic conversation to advanced AI ass
 3. **Platform Growth**: Extensible Android integration
 4. **User Growth**: Efficient local processing
 
-This architecture prioritizes simplicity, privacy, and user experience while maintaining extensibility for future enhancements.
+## Architectural Decision: Single App vs Modular
+
+**Why Single Unified App:**
+- **Simplicity**: Matches our vision of reducing complexity and distraction
+- **Community Focus**: All contributors work on the same cohesive experience
+- **Faster Development**: Single codebase with unified testing and deployment
+- **User Experience**: No fragmentation, consistent interface and behavior
+- **Privacy**: Easier to audit and secure with everything in one app
+
+**Future Considerations:**
+- Post v1.0, selective modularity may be introduced for themes and specialized tools
+- Core experience will always remain unified
+- Any future extensions will enhance, not fragment, the main experience
+
+This architecture prioritizes simplicity, privacy, and user experience while enabling focused community development around a shared vision.

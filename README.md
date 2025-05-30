@@ -68,7 +68,7 @@ You: "Find pizza places nearby"
 
 ## 🏗️ Architecture
 
-cOS uses a unified architecture focused on simplicity and natural conversation:
+cOS is built as a **single unified Android application** that serves as both launcher and intelligent assistant. This approach prioritizes simplicity, community focus, and user experience consistency.
 
 ```
 Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feedback
@@ -76,19 +76,22 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 
 ### Core Principles
 
-1. **Conversation-First** - Everything happens through natural language
-2. **Distraction Reduction** - Inspired by olauncher's minimalism  
-3. **Deep Integration** - Don't just launch apps, actually control them
-4. **Silent Learning** - AI learns user preferences without asking
-5. **Built-in Essentials** - Include basic tools to reduce app dependency
+1. **Unified Single App** - Everything in one cohesive experience, no fragmentation
+2. **Conversation-First** - Everything happens through natural language
+3. **Distraction Reduction** - Inspired by olauncher's minimalism  
+4. **Deep Integration** - Don't just launch apps, actually control them
+5. **Silent Learning** - AI learns user preferences without asking
+6. **Built-in Essentials** - Include basic tools to reduce app dependency
+7. **Community-Focused** - All contributors work on the same unified vision
 
-### Core Components
+### Single App Components
 
 - **Unified Conversational Interface** - Single chat + essential shortcuts
 - **Local AI Engine** - Gemma 2B for on-device natural language processing
 - **Deep Android Integration** - Intelligent app control and content filtering
 - **Preference Learning Engine** - Silent learning of user habits and preferences
 - **Built-in Tool Suite** - Essential utilities to reduce app dependency
+- **Launcher Replacement** - Complete home screen replacement functionality
 
 ## 🛠️ Getting Started
 
@@ -102,10 +105,10 @@ Input (Voice/Text) → AI Understanding → Deep Android Action → Minimal Feed
 
 ```bash
 # Clone the repository
-git clone https://github.com/arnaldo-delisio/cos.git
-cd cos/cos-core
+git clone https://github.com/arnaldo-delisio/cOS.git
+cd cOS/cos-core
 
-# Build and install
+# Build and install the unified app
 ./gradlew installDebug
 ```
 
@@ -161,14 +164,21 @@ cd cos/cos-core
 
 ## 🤝 Contributing
 
-We welcome contributions to make phones more conversational and less distracting!
+We welcome contributions to make phones more conversational and less distracting! cOS is built as a **single unified application** where all community efforts focus on improving the core experience.
 
-**Ways to help:**
+**Community-Focused Development:**
+- 🎯 **Unified Vision** - All contributors work on the same cohesive experience
+- 🧠 **AI Integration** - Help implement and optimize local AI conversation understanding
+- 📱 **Deep Android Control** - Build intelligent app integration and content filtering
+- 🎨 **Unified Interface** - Improve the distraction-free conversational launcher
+- 🛠️ **Built-in Tools** - Add essential functionality to reduce app dependency
+
+**Ways to Contribute:**
 - 🧪 Test the unified conversation experience on different devices
-- 💡 Suggest new intelligent conversation patterns
+- 💡 Suggest new intelligent conversation patterns and AI improvements
 - 🐛 Report bugs or unexpected AI behavior
 - 📝 Improve documentation and user guides
-- 🔧 Submit code improvements for deep Android integration
+- 🔧 Submit code improvements for the unified app
 
 See our [Contributing Guide](cos-docs/CONTRIBUTING.md) for details.
 
